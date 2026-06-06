@@ -55,7 +55,7 @@ export function Login() {
             return;
           }
 
-          navigate("/home")
+          navigate("/")
           
           toast.success("Logged in successfully")
         },

@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import type { Hospital } from "../types/hospital";
 import { HospitalCard } from "./HospitalCard";
 
+import { Input } from "./ui/Input";
+
 export function HospitalFilter() {
   const [search, setSearch] = useState("");
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
@@ -38,8 +40,7 @@ export function HospitalFilter() {
   return (
     <div>
       <div>
-        <input
-          className="border-2 border-amber-300"
+        <Input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
