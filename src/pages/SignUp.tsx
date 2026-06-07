@@ -5,8 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 
-import {toast } from 'sonner';
-
+import { toast } from "sonner";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,10 +13,9 @@ import {
   faEyeSlash,
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
-import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 
 const signupSchema = z.object({
-  fullName: z.string().min(4, "user must be more than 4 letters"),
+  fullName: z.string().min(4, "Username must be more than 4 letters"),
   email: z.string().min(1, "Email is required").email("Invalid email address"),
   password: z
     .string()
@@ -69,165 +67,169 @@ export function SignUp() {
         return;
       }
 
-      toast.success("Signup sucessful")
-      navigate("/")
+      toast.success("Signup sucessful");
+      navigate("/");
     },
   });
 
   const { Field, Subscribe } = form;
 
   return (
-    <main>
-      <form
-        noValidate
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-      >
-        <Field
-          name="fullName"
-          validators={{ onBlur: signupSchema.shape.fullName }}
-        >
-          {({ state, handleChange, handleBlur }) => (
-            <div>
-              <label htmlFor="fullName">
-                Full Name <FontAwesomeIcon icon={faAsterisk} />
-              </label>
-              <input
-                required
-                id="fullName"
-                type="text"
-                placeholder="Fathia Gbolahan"
-                autoComplete="name"
-                name="fullName"
-                value={state.value}
-                onChange={(e) => handleChange(e.target.value)}
-                onBlur={handleBlur}
-                aria-invalid={!!state.meta.errors?.length}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="text-xs text-red-600 mt-2">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </div>
-          )}
-        </Field>
+    <main className="bg-white">
+      <div className="h-screen flex flex-col text-center justify-center w-full mx-auto max-w-lg px-4">
+        <p className="text-2xl">Create account</p>
+        <p className="text-sm text-gray-500">Welcome to CareFinder</p>
 
-        <Field name="email" validators={{ onBlur: signupSchema.shape.email }}>
-          {({ state, handleChange, handleBlur }) => (
-            <div>
-              <label htmlFor="email">
-                Email Address <FontAwesomeIcon icon={faAsterisk} />
-              </label>
-              <input
-                required
-                id="email"
-                type="email"
-                placeholder="thegbolahanfathia@gmail.com"
-                autoComplete="email"
-                name="email"
-                value={state.value}
-                onChange={(e) => handleChange(e.target.value)}
-                onBlur={handleBlur}
-                aria-invalid={!!state.meta.errors?.length}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="text-xs text-red-600 mt-2">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </div>
-          )}
-        </Field>
-
-        <Field
-          name="password"
-          validators={{ onBlur: signupSchema.shape.password }}
+        <form
+          className="border rounded-3xl border-gray-400 bg-white mt-4 p-3 shadow-lg"
+          noValidate
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
         >
-          {({ state, handleBlur, handleChange }) => (
-            <div className="mt-4">
-              <label htmlFor="password" className="flex">
-                Password <FontAwesomeIcon icon={faAsterisk} />
-              </label>
-              <div className="flex border rounded-lg border-gray-300 px-4 py-1">
+          <Field
+            name="fullName"
+            validators={{ onBlur: signupSchema.shape.fullName }}
+          >
+            {({ state, handleChange, handleBlur }) => (
+              <div className="flex flex-col text-start">
+                <label htmlFor="fullName" className="text-sm">
+                  Full Name{" "}
+                  <FontAwesomeIcon
+                    icon={faAsterisk}
+                    className="text-[10px] text-red-500"
+                  />
+                </label>
                 <input
+                  className="px-3 py-1.5 border rounded-2xl text-sm mt-1.5"
                   required
-                  id="password"
-                  name="password"
-                  placeholder="Robe@123"
-                  autoComplete="new-password"
-                  type={showPassword ? "text" : "password"}
+                  id="fullName"
+                  type="text"
+                  placeholder="Fathia Gbolahan"
+                  autoComplete="name"
+                  name="fullName"
                   value={state.value}
-                  onBlur={handleBlur}
                   onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
                   aria-invalid={!!state.meta.errors?.length}
-                  className="focus:outline-none w-full"
                 />
-                <button
-                  className="self-center ml-1 cursor-pointer"
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <FontAwesomeIcon icon={faEyeSlash} />
-                  ) : (
-                    <FontAwesomeIcon icon={faEye} />
-                  )}
-                </button>
+                {state.meta.errors.length > 0 && (
+                  <p className="text-xs text-red-600 mt-2">
+                    {getErrorMessage(state.meta.errors[0])}
+                  </p>
+                )}
               </div>
-              {state.meta.errors.length > 0 && (
-                <p className="text-xs text-red-600 mt-2">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </div>
-          )}
-        </Field>
+            )}
+          </Field>
 
-        <Subscribe
-          selector={(state) => ({
-            canSubmit: state.canSubmit,
-            isSubmitting: state.isSubmitting,
-          })}
-        >
-          {({ canSubmit, isSubmitting }) => (
-            <button
-              type="submit"
-              disabled={!canSubmit}
-              className="cursor-pointer mt-10 py-1 inline-flex w-full justify-center border border-white bg-green-800 text-white rounded-2xl hover:bg-green-700 transition-colors ease-in-out duration-500"
-            >
-              {isSubmitting ? "Signing up..." : "Sign up"}
-            </button>
-          )}
-        </Subscribe>
-      </form>
+          <Field name="email" validators={{ onBlur: signupSchema.shape.email }}>
+            {({ state, handleChange, handleBlur }) => (
+              <div className="flex flex-col text-start mt-6">
+                <label htmlFor="email" className="text-sm">
+                  Email Address{" "}
+                  <FontAwesomeIcon
+                    icon={faAsterisk}
+                    className="text-[10px] text-red-500"
+                  />
+                </label>
+                <input
+                  className="px-3 py-1.5 border rounded-2xl text-sm mt-1.5"
+                  required
+                  id="email"
+                  type="email"
+                  placeholder="thegbolahanfathia@gmail.com"
+                  autoComplete="email"
+                  name="email"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  aria-invalid={!!state.meta.errors?.length}
+                />
+                {state.meta.errors.length > 0 && (
+                  <p className="text-xs text-red-600 mt-2">
+                    {getErrorMessage(state.meta.errors[0])}
+                  </p>
+                )}
+              </div>
+            )}
+          </Field>
 
-      <div className="flex items-center gap-4 w-full max-w-sm my-6">
-        <div className="flex-1 h-px bg-gray-300"></div>
+          <Field
+            name="password"
+            validators={{ onBlur: signupSchema.shape.password }}
+          >
+            {({ state, handleBlur, handleChange }) => (
+              <div className="flex flex-col text-start mt-6">
+                <label htmlFor="password" className="text-sm">
+                  Password{" "}
+                  <FontAwesomeIcon
+                    icon={faAsterisk}
+                    className="text-[10px] text-red-500"
+                  />
+                </label>
+                <div className="flex px-3 py-1.5 border rounded-2xl text-sm mt-1.5">
+                  <input
+                    required
+                    id="password"
+                    name="password"
+                    placeholder="Robe@123"
+                    autoComplete="new-password"
+                    type={showPassword ? "text" : "password"}
+                    value={state.value}
+                    onBlur={handleBlur}
+                    onChange={(e) => handleChange(e.target.value)}
+                    aria-invalid={!!state.meta.errors?.length}
+                    className="focus:outline-none w-full"
+                  />
+                  <button
+                    className="self-center ml-1 cursor-pointer"
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <FontAwesomeIcon icon={faEyeSlash} />
+                    ) : (
+                      <FontAwesomeIcon icon={faEye} />
+                    )}
+                  </button>
+                </div>
+                {state.meta.errors.length > 0 && (
+                  <p className="text-xs text-red-600 mt-2">
+                    {getErrorMessage(state.meta.errors[0])}
+                  </p>
+                )}
+              </div>
+            )}
+          </Field>
 
-        <span className="text-gray-500 text-sm whitespace-nowrap">
-          or signup with
-        </span>
-
-        <div className="flex-1 h-px bg-gray-300"></div>
-      </div>
-
-      <div className="flex justify-center gap-8">
-        <Link to={""}>
-          <FontAwesomeIcon icon={faFacebook} />
-        </Link>
-        <Link to={""}>
-          <FontAwesomeIcon icon={faFacebook} />
-        </Link>
-        <Link to={""}>
-          <FontAwesomeIcon icon={faFacebook} />
-        </Link>
-        <Link to={""}>
-          <FontAwesomeIcon icon={faFacebook} />
-        </Link>
+          <Subscribe
+            selector={(state) => ({
+              canSubmit: state.canSubmit,
+              isSubmitting: state.isSubmitting,
+            })}
+          >
+            {({ canSubmit, isSubmitting }) => (
+              <button
+                type="submit"
+                disabled={!canSubmit}
+                className="cursor-pointer mt-10 py-1 inline-flex w-full justify-center border border-white bg-green-800 text-white rounded-2xl hover:bg-green-700 transition-colors ease-in-out duration-500"
+              >
+                {isSubmitting ? "Signing up..." : "Sign up"}
+              </button>
+            )}
+          </Subscribe>
+        </form>
+        <p className="text-sm mt-5">
+          Go back{" "}
+          <Link
+            to={"/"}
+            className=" hover:text-green-400 cursor-pointer trasition delay-200"
+          >
+            home ➡️
+          </Link>
+        </p>
       </div>
     </main>
   );

@@ -14,12 +14,12 @@ export function Input({
 }: InputProps) {
   return (
     <div className="flex flex-col gap-1">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id} className="flex flex-col text-start">{label}</label>
 
       <input
         id={id}
         {...props}
-        className="border rounded px-3 py-1.5"
+        className="px-3 py-1.5 border rounded-2xl text-sm mt-1.5"
       />
 
       {error && (
@@ -30,3 +30,4 @@ export function Input({
     </div>
   );
 }
+
