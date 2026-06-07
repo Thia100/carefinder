@@ -12,4 +12,7 @@ export type Hospital = {
   rating: number | null;
   visiting_hours: string | null;
   image_url: string | null;
+  notes?: string | null;
+  longitude?: number | null;
+  latitude?: number | null;
 };

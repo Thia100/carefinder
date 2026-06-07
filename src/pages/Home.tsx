@@ -1,6 +1,9 @@
 import { HospitalFilter } from "../components/HospitalFilter";
+import { useEffect } from "react";
 
 export function Home() {
+
+  
   return (
     <main className="bg-white min-h-screen">
       <div className="px-4 py-6 flex justify-center">

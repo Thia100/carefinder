@@ -207,14 +207,15 @@ export function CreateHospital() {
         </Field>
 
         <Field name="notes" validators={{ onBlur: hospitalSchema.shape.notes }}>
-          {({ state, handleChange }) => (
+          {({ state, handleChange , handleBlur}) => (
             <>
-              <label>Notes</label>
-
+              <label htmlFor="notes">Notes</label>
               <MDEditor
                 value={state.value}
                 onChange={(value) => handleChange(value || "")}
-              />
+                onBlur={handleBlur}
+                id="notes"
+              ></MDEditor>
 
               {state.meta.errors.length > 0 && (
                 <p>{getErrorMessage(state.meta.errors[0])}</p>

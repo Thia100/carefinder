@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { Spinner } from "../components/ui/spinner";
 
 
 const loginSchema = z.object({
@@ -153,7 +154,7 @@ export function Login() {
                 disabled={!canSubmit}
                 className="cursor-pointer mt-10 py-1 inline-flex w-full justify-center border border-white bg-green-800 text-white rounded-2xl hover:bg-green-700 transition-colors ease-in-out duration-500"
               >
-                {isSubmitting ? "Logging in..." : "Login"}
+                {isSubmitting ? <Spinner /> : "Login"}
               </button>
             )}
           </Subscribe>

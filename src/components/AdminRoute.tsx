@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { getCurrentProfile } from "../features/auth/api/getCurrentProfile";
 import type { Profile } from "../types/profile";
+import { Spinner } from "./ui/spinner";
 
 type AdminRouteProps = {
   children: React.ReactNode;
@@ -33,7 +34,7 @@ export function AdminRoute({
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Spinner />;
   }
 
   if (profile?.role !== "admin") {

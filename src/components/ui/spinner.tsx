@@ -1,6 +1,9 @@
+import { ClipLoader } from "react-spinners";
+
 export function Spinner() {
-    return (
-        <>
-        </>
-    )
+  return (
+    <div className="h-screen flex items-center justify-center">
+        <ClipLoader />
+    </div>
+  );
 }

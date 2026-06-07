@@ -15,6 +15,7 @@ import rehypeSanitize from "rehype-sanitize";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Spinner } from "../components/ui/spinner";
 
 export function HospitalDetails() {
   const [rating, setRating] = useState(5);
@@ -76,7 +77,7 @@ export function HospitalDetails() {
   }
 
   if (loading) {
-    return <p className="p-6 text-gray-500">Loading...</p>;
+    return <Spinner />
   }
 
   if (!hospital) {

@@ -14,6 +14,8 @@ import {
   faEye,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { Spinner } from "../components/ui/spinner";
+
 const signupSchema = z.object({
   fullName: z.string().min(4, "Username must be more than 4 letters"),
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -216,7 +218,7 @@ export function SignUp() {
                 disabled={!canSubmit}
                 className="cursor-pointer mt-10 py-1 inline-flex w-full justify-center border border-white bg-green-800 text-white rounded-2xl hover:bg-green-700 transition-colors ease-in-out duration-500"
               >
-                {isSubmitting ? "Signing up..." : "Sign up"}
+                {isSubmitting ? <Spinner /> : "Sign up"}
               </button>
             )}
           </Subscribe>
