@@ -1,7 +1,7 @@
 import type { Hospital } from "../types/hospital";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
 
 type HospitalCardProps = {
   hospital: Hospital;
@@ -31,20 +31,6 @@ export function HospitalCard({ hospital }: HospitalCardProps) {
             {hospital.city}
           </p>
         </div>
-
-        <Link
-          to={`/admin/edit-hospital/${hospital.id}`}
-          className="
-            p-2
-            rounded-lg
-            bg-[#5580AC]/10
-            text-[#5580AC]
-            hover:bg-[#5580AC]/20
-            transition
-          "
-        >
-          <FontAwesomeIcon icon={faPencil} />
-        </Link>
       </div>
 
       <div className="mt-4">

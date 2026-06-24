@@ -7,6 +7,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { AdminRoute } from "./components/AdminRoute";
 import { CreateHospital } from "./pages/CreateHospital";
 import { EditHospital } from "./pages/EditHospital";
+import { ManageHospitals } from "./pages/ManageHospitals";
 
 import { Toaster } from "sonner";
 
@@ -24,13 +25,14 @@ function App() {
           }
         />
         <Route
-          path="/admin/edit-hospital/:id"
+          path="/admin/manage-hospitals"
           element={
-           
-              <EditHospital />
-          
+            <AdminRoute>
+              <ManageHospitals />
+            </AdminRoute>
           }
         />
+        <Route path="/admin/edit-hospital/:id" element={<EditHospital />} />
         <Route
           path="/admin/new-hospital"
           element={
