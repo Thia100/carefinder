@@ -13,9 +13,9 @@ import { supabase } from "../lib/supabase";
 import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Spinner } from "../components/ui/spinner";
+
+import { BackHome } from "../components/ui/BackHome";
 
 export function HospitalDetails() {
   const [rating, setRating] = useState(5);
@@ -77,7 +77,7 @@ export function HospitalDetails() {
   }
 
   if (loading) {
-    return <Spinner />
+    return <Spinner />;
   }
 
   if (!hospital) {
@@ -89,22 +89,25 @@ export function HospitalDetails() {
       ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
       : 0;
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-6 flex justify-center">
-      <div className="w-full max-w-4xl space-y-6">
-        <Link to={"/"} className="text-sm text-blue-600 hover:underline">
-          <FontAwesomeIcon icon={faArrowLeft} /> Back
-        </Link>
+    <main className="min-h-screen bg-[#FAFAFD] p-8">
+      <div className="w-full max-w-5xl mx-auto space-y-6">
+        <div>
+          <BackHome />
+        </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm space-y-3">
-          <div className="bg-white p-6 rounded-xl shadow-sm space-y-3">
-            <h1 className="text-2xl font-bold">{hospital.name}</h1>
-            <p>
-              Average rating: ⭐ {averageRating.toFixed(1)} ({reviews.length}{" "}
-              reviews)
-            </p>
+        <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] shadow-sm">
+          <h1 className="text-3xl font-bold text-[#122056]">{hospital.name}</h1>
+
+          <div className="flex items-center gap-3 mt-3">
+            <span className="px-3 py-1 rounded-lg bg-[#EEEFFD] text-[#5B65DC] text-sm font-medium">
+              Average Rating: ⭐ {averageRating.toFixed(1)}
+            </span>
+            <span className="text-slate-500 text-sm">
+              {reviews.length} reviews
+            </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+          <div className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-sm mt-6 space-y-2">
             <p>
               <strong>Address:</strong> {hospital.address}
             </p>
@@ -131,15 +134,20 @@ export function HospitalDetails() {
             </p>
           </div>
 
-          <div className="pt-2 text-sm leading-relaxed text-gray-700">
-            <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
-              {hospital.description}
-            </ReactMarkdown>
+          <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] mt-4">
+            <h2 className="text-xl font-semibold text-[#122056] mb-4">
+              About this Hospital
+            </h2>
+            <div className="prose prose-slate max-w-none">
+              <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
+                {hospital.description}
+              </ReactMarkdown>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm space-y-4">
-          <h2 className="text-lg font-semibold">Reviews</h2>
+        <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] space-y-4">
+          <h2 className="text-lg font-semibold text-[#122056]">Reviews</h2>
           {reviews.length === 0 ? (
             <p className="text-sm text-gray-500">No reviews yet.</p>
           ) : (
@@ -147,10 +155,10 @@ export function HospitalDetails() {
               {reviews.map((review) => (
                 <article
                   key={review.id}
-                  className="border rounded-lg p-3 bg-gray-50"
+                  className="rounded-2xl border border-[#EEEFFD] p-4 bg-[#FAFAFD]"
                 >
-                  <p className="text-sm font-medium">⭐: {review.rating}/5</p>
-                  <p className="text-sm text-gray-700">
+                  <p className="font-semibold text-[#122056]">⭐: {review.rating}/5</p>
+                  <p className="mt-2 text-slate-600">
                     Comment: {review.comment}
                   </p>
                 </article>
@@ -160,13 +168,13 @@ export function HospitalDetails() {
         </div>
 
         {user ? (
-          <div className="bg-white p-6 rounded-xl shadow-sm space-y-3">
-            <h2 className="text-lg font-semibold">Leave a Review</h2>
+          <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] shadow-sm space-y-3">
+            <h2 className="text-xl font-semibold text-[#122056]">Leave a Review</h2>
 
             <select
               value={rating}
               onChange={(e) => setRating(Number(e.target.value))}
-              className="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 focus:border-[#5B65DC] focus:ring-2 focus:ring-[#EEEFFD] focus:outline-none"
             >
               <option value={1}>1</option>
               <option value={2}>2</option>
@@ -179,18 +187,18 @@ export function HospitalDetails() {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Write your review..."
-              className="w-full border rounded-md px-3 py-2 text-sm h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 h-32 resize-none focus:border-[#5B65DC] focus:ring-2 focus:ring-[#EEEFFD] focus:outline-none"
             />
 
             <button
               onClick={handleSubmitReview}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+              className="bg-[#122056] text-white px-5 py-3 rounded-xl font-medium hover:bg-[#5B65DC] transition-colors"
             >
               Submit Review
             </button>
           </div>
         ) : (
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 text-center">
             <Link to={"/login"} className="text-blue-600 hover:underline">
               Login
             </Link>{" "}

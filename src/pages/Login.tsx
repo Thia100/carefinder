@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { Spinner } from "../components/ui/spinner";
 
+import { BackHome } from "../components/ui/BackHome";
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -59,12 +60,22 @@ export function Login() {
 
   return (
     <main className="bg-white">
-      <div className="h-screen flex flex-col text-center justify-center w-full mx-auto max-w-lg px-4">
-        <p className="text-2xl">Login to CareFinder</p>
-        <p className="text-sm text-gray-500">Login to access more features</p>
+      <div className="text-left p-4 ">
+        <BackHome />
+      </div>
+
+      <div className="max-w-96 mx-auto text-center">
+        <div className="text-center">
+          <p className="text-3xl mb-1.5 font-semibold text-[#3B8780]">
+            Login to CareFinder
+          </p>
+          <p className="text-sm text-[#5580AC]">
+            Login to access more features
+          </p>
+        </div>
 
         <form
-          className="border rounded-3xl border-gray-400 bg-white mt-4 p-3 shadow-lg"
+          className="border rounded-3xl border-gray-400 bg-white mt-18 px-4 py-5 shadow-lg"
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
@@ -79,7 +90,7 @@ export function Login() {
                   Email Address
                 </label>
                 <input
-                className="px-3 py-1.5 border rounded-2xl text-sm mt-1.5"
+                  className="px-3 py-2 border rounded-2xl text-xs mt-1.5 outline-none focus:border-[#5580AC]"
                   id="email"
                   type="email"
                   placeholder="thegbolahanfathia@gmail.com"
@@ -104,11 +115,11 @@ export function Login() {
             validators={{ onBlur: loginSchema.shape.password }}
           >
             {({ state, handleBlur, handleChange }) => (
-              <div className="flex flex-col text-start mt-6">
+              <div className="flex flex-col text-start mt-8">
                 <label htmlFor="password" className="text-sm">
                   Password
                 </label>
-                <div className="flex px-3 py-1.5 border rounded-2xl text-sm mt-1.5">
+                <div className="flex px-3 py-1.5 border rounded-2xl text-sm mt-1.5 focus-within:border-[#5580AC]">
                   <input
                     id="password"
                     name="password"
@@ -119,7 +130,7 @@ export function Login() {
                     onBlur={handleBlur}
                     onChange={(e) => handleChange(e.target.value)}
                     aria-invalid={!!state.meta.errors?.length}
-                    className="focus:outline-none w-full"
+                    className="focus:outline-none w-full text-xs"
                   />
                   <button
                     className="self-center ml-1 cursor-pointer"
@@ -127,9 +138,12 @@ export function Login() {
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <FontAwesomeIcon icon={faEyeSlash} />
+                      <FontAwesomeIcon
+                        icon={faEyeSlash}
+                        className="text-xs hover:text-blue-500"
+                      />
                     ) : (
-                      <FontAwesomeIcon icon={faEye} />
+                      <FontAwesomeIcon icon={faEye} className="text-xs" />
                     )}
                   </button>
                 </div>
@@ -152,15 +166,26 @@ export function Login() {
               <button
                 type="submit"
                 disabled={!canSubmit}
-                className="cursor-pointer mt-10 py-1 inline-flex w-full justify-center border border-white bg-green-800 text-white rounded-2xl hover:bg-green-700 transition-colors ease-in-out duration-500"
+                className="cursor-pointer mt-12 py-1 inline-flex w-full justify-center border border-white bg-green-800 text-white rounded-2xl hover:bg-green-700 transition-colors ease-in-out duration-500"
               >
                 {isSubmitting ? <Spinner /> : "Login"}
               </button>
             )}
           </Subscribe>
         </form>
-        <p className="text-sm mt-5">Login as <Link to={"/admin"} className=" hover:text-green-400 cursor-pointer trasition delay-200">admin</Link></p>
-         <p className="text-sm mt-5">Go back <Link to={"/"} className=" hover:text-green-400 cursor-pointer trasition delay-200">home ➡️</Link></p>
+
+        <Link
+          to={"/admin"}
+          className="text-sm hover:text-blue-400 transition delay-200 block mt-5"
+        >
+          Login as Admin
+        </Link>
+        <Link
+          to={"/signup"}
+          className="mt-2 text-sm hover:text-blue-400 transition delay-200 block"
+        >
+          Sign Up
+        </Link>
       </div>
     </main>
   );

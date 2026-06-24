@@ -19,7 +19,7 @@ export function Input({
       <input
         id={id}
         {...props}
-        className="px-3 py-1.5 border rounded-2xl text-sm mt-1.5"
+        className="px-3 py-1.5 border rounded-2xl text-sm mt-1.5 outline-none focus:border-[#3B8780]"
       />
 
       {error && (

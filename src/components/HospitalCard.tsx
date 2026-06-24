@@ -1,7 +1,7 @@
 import type { Hospital } from "../types/hospital";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faPhone } from "@fortawesome/free-solid-svg-icons";
 
 type HospitalCardProps = {
   hospital: Hospital;
@@ -9,30 +9,88 @@ type HospitalCardProps = {
 
 export function HospitalCard({ hospital }: HospitalCardProps) {
   return (
-    <>
-      <article className="bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 cursor-pointer space-y-2">
-        <div className="flex justify-between">
-          <Link to={`/hospital/${hospital.id}`}>
-            <h2 className="text-lg font-semibold text-gray-900">
-              {hospital.name}
-            </h2>
+    <article
+      className="
+        bg-white
+        rounded-2xl
+        border border-slate-200
+        p-5
+        shadow-sm
+        hover:shadow-lg
+        hover:-translate-y-1
+        transition-all duration-300
+      "
+    >
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="text-lg font-bold text-slate-800">
+            {hospital.name}
+          </h2>
 
-            <div>
-              <span className="text-blue-600 px-2 flex">{hospital.city}</span>
-              <span className="text-blue-600 px-2 flex">
-                {hospital.specialty}
-              </span>
-              <span className="text-blue-600 px-2 flex">{hospital.phone}</span>
-            </div>
-          </Link>
-
-          <span className="cursor-pointer">
-            <Link to={`/admin/edit-hospital/${hospital.id}`}>
-              <FontAwesomeIcon icon={faPencil} />
-            </Link>
-          </span>
+          <p className="text-sm text-slate-500 mt-1">
+            {hospital.city}
+          </p>
         </div>
-      </article>
-    </>
+
+        <Link
+          to={`/admin/edit-hospital/${hospital.id}`}
+          className="
+            p-2
+            rounded-lg
+            bg-[#5580AC]/10
+            text-[#5580AC]
+            hover:bg-[#5580AC]/20
+            transition
+          "
+        >
+          <FontAwesomeIcon icon={faPencil} />
+        </Link>
+      </div>
+
+      <div className="mt-4">
+        <span
+          className="
+            inline-block
+            bg-[#89B3D8]/20
+            text-[#5580AC]
+            px-3 py-1
+            rounded-full
+            text-xs
+            font-medium
+          "
+        >
+          {hospital.specialty}
+        </span>
+      </div>
+
+      <div className="mt-4 space-y-2">
+        <p className="text-sm text-slate-700">
+          <FontAwesomeIcon icon={faPhone} className="text-[#5580AC]"/> {hospital.phone}
+        </p>
+
+        <p className="text-sm text-slate-500">
+          {hospital.ownership_type}
+        </p>
+      </div>
+
+      <Link
+        to={`/hospital/${hospital.id}`}
+        className="
+          mt-5
+          block
+          w-full
+          text-center
+          bg-[#3B8780]
+          text-white
+          py-2.5
+          rounded-xl
+          font-medium
+          hover:bg-[#32726c]
+          transition
+        "
+      >
+        View Details
+      </Link>
+    </article>
   );
 }

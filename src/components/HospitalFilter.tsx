@@ -2,7 +2,6 @@ import { getHospitals } from "../features/auth/api/getHospitals";
 import { useState, useEffect } from "react";
 import type { Hospital } from "../types/hospital";
 import { HospitalCard } from "./HospitalCard";
-
 import { Input } from "./ui/Input";
 
 export function HospitalFilter() {
@@ -40,8 +39,9 @@ export function HospitalFilter() {
   });
 
   return (
-    <div className="space-y-6 min-h-screen bg-white">
-      <div className="sticky top-0 z-10 w-full bg-gray-50 p-4 rounded-xl shadow-sm">
+    <div>
+      <div className="sticky top-4 z-10 bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl shadow-sm p-4 mb-12">
+        <p className="mt-2 text-slate-600 text-sm text-center">Search hospitals by name, city, specialty, or ownership type.</p>
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr] lg:items-center gap-3">
           <Input
             placeholder="Search hospitals, city, or LGA..."
@@ -52,7 +52,7 @@ export function HospitalFilter() {
           <select
             value={specialty}
             onChange={(e) => setSpecialty(e.target.value)}
-            className="w-full border rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border rounded-md px-3 py-2 text-sm bg-white outline-none focus:border-[#3B8780]"
           >
             <option value="">All Specialties</option>
             <option value="Maternity">Maternity</option>
@@ -64,7 +64,7 @@ export function HospitalFilter() {
           <select
             value={ownershipType}
             onChange={(e) => setOwnershipType(e.target.value)}
-            className="w-full border rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border rounded-md px-3 py-2 text-sm bg-white outline-none focus:border-[#3B8780]"
           >
             <option value="">All Types</option>
             <option value="Public">Public</option>
@@ -73,13 +73,13 @@ export function HospitalFilter() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-600">
+      
+        <p className="text-sm text-gray-600 mb-4">
           Showing{" "}
           <span className="font-semibold">{filteredHospitals.length}</span>{" "}
           hospitals
         </p>
-      </div>
+      
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filteredHospitals.map((hospital) => (

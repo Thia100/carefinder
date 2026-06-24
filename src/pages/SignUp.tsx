@@ -7,6 +7,8 @@ import { z } from "zod";
 
 import { toast } from "sonner";
 
+import { BackHome } from "../components/ui/BackHome";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAsterisk,
@@ -78,9 +80,14 @@ export function SignUp() {
 
   return (
     <main className="bg-white">
-      <div className="h-screen flex flex-col text-center justify-center w-full mx-auto max-w-lg px-4">
-        <p className="text-2xl">Create account</p>
-        <p className="text-sm text-gray-500">Welcome to CareFinder</p>
+      <div className="text-left p-4 ">
+        <BackHome />
+      </div>
+      <div className="max-w-96 mx-auto text-center">
+        <div className="text-center">
+          <p className="text-2xl">Create account</p>
+          <p className="text-sm text-gray-500">Welcome to CareFinder</p>
+        </div>
 
         <form
           className="border rounded-3xl border-gray-400 bg-white mt-4 p-3 shadow-lg"
@@ -223,15 +230,7 @@ export function SignUp() {
             )}
           </Subscribe>
         </form>
-        <p className="text-sm mt-5">
-          Go back{" "}
-          <Link
-            to={"/"}
-            className=" hover:text-green-400 cursor-pointer trasition delay-200"
-          >
-            home ➡️
-          </Link>
-        </p>
+        <Link to={"/login"} className="mt-6 block">Login</Link>
       </div>
     </main>
   );

@@ -9,6 +9,7 @@ import { Input } from "../components/ui/Input";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Button } from "../components/ui/Button";
+import { BackHome } from "../components/ui/BackHome";
 
 const hospitalSchema = z.object({
   name: z.string().min(1, "Hospital name is required"),
@@ -133,180 +134,212 @@ export function EditHospital() {
   const { Field, Subscribe } = form;
 
   return (
-    <main>
-      <h1>Edit Hospital</h1>
-      <p>Hospital ID: {id}</p>
+    <main className="min-h-screen bg-[#FAFAFD] py-10 px-4">
+      <div className="py-2">
+        <BackHome />
+      </div>
+      <section className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-[#122056]">Edit Hospital</h1>
 
-      <form
-        noValidate
-        onSubmit={(e) => {
-          e.preventDefault();
-          form.handleSubmit();
-        }}
-      >
-        <Field name="name" validators={{ onBlur: hospitalSchema.shape.name }}>
-          {({ state, handleChange }) => (
-            <>
+          <p className="mt-2 text-slate-500">
+            Update hospital information and services.
+          </p>
+        </div>
+
+        <form
+        className="bg-white rounded-3xl border border-[#EEEFFD] shadow-sm p-8 space-y-8"
+          noValidate
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit();
+          }}
+        >
+          
+          <Field name="name" validators={{ onBlur: hospitalSchema.shape.name }}>
+            {({ state, handleChange }) => (
+              <>
+                <Input
+                  label="Name"
+                  value={state.value ?? ""}
+                  onChange={(e) => handleChange(e.target.value)}
+                />
+                {state.meta.errors.length > 0 && (
+                  <p className="text-red-600">
+                    {getErrorMessage(state.meta.errors[0])}
+                  </p>
+                )}
+              </>
+            )}
+          </Field>
+
+          <Field
+            name="address"
+            validators={{ onBlur: hospitalSchema.shape.address }}
+          >
+            {({ state, handleChange }) => (
+              <>
+                <Input
+                  label="Address"
+                  value={state.value ?? ""}
+                  onChange={(e) => handleChange(e.target.value)}
+                />
+                {state.meta.errors.length > 0 && (
+                  <p className="text-red-600">
+                    {getErrorMessage(state.meta.errors[0])}
+                  </p>
+                )}
+              </>
+            )}
+          </Field>
+
+          <Field name="city" validators={{ onBlur: hospitalSchema.shape.city }}>
+            {({ state, handleChange }) => (
+              <>
+                <Input
+                  label="City"
+                  value={state.value ?? ""}
+                  onChange={(e) => handleChange(e.target.value)}
+                />
+                {state.meta.errors.length > 0 && (
+                  <p className="text-red-600">
+                    {getErrorMessage(state.meta.errors[0])}
+                  </p>
+                )}
+              </>
+            )}
+          </Field>
+
+          <Field name="lga" validators={{ onBlur: hospitalSchema.shape.lga }}>
+            {({ state, handleChange }) => (
+              <>
+                <Input
+                  label="LGA"
+                  value={state.value ?? ""}
+                  onChange={(e) => handleChange(e.target.value)}
+                />
+                {state.meta.errors.length > 0 && (
+                  <p className="text-red-600">
+                    {getErrorMessage(state.meta.errors[0])}
+                  </p>
+                )}
+              </>
+            )}
+          </Field>
+
+          <Field
+            name="phone"
+            validators={{ onBlur: hospitalSchema.shape.phone }}
+          >
+            {({ state, handleChange }) => (
+              <>
+                <Input
+                  label="Phone"
+                  value={state.value ?? ""}
+                  onChange={(e) => handleChange(e.target.value)}
+                />
+                {state.meta.errors.length > 0 && (
+                  <p className="text-red-600">
+                    {getErrorMessage(state.meta.errors[0])}
+                  </p>
+                )}
+              </>
+            )}
+          </Field>
+
+          <Field
+            name="email"
+            validators={{ onBlur: hospitalSchema.shape.email }}
+          >
+            {({ state, handleChange }) => (
+              <>
+                <Input
+                  label="Email"
+                  value={state.value ?? ""}
+                  onChange={(e) => handleChange(e.target.value)}
+                />
+                {state.meta.errors.length > 0 && (
+                  <p className="text-red-600">
+                    {getErrorMessage(state.meta.errors[0])}
+                  </p>
+                )}
+              </>
+            )}
+          </Field>
+
+          <Field
+            name="specialty"
+            validators={{ onBlur: hospitalSchema.shape.specialty }}
+          >
+            {({ state, handleChange }) => (
+              <div>
+                <label>Specialty</label>
+
+                <select
+                  name="specialty"
+                  value={state.value ?? ""}
+                  onChange={(e) => handleChange(e.target.value)}
+                >
+                  <option value="">Select Specialty</option>
+                  <option value="Maternity">Maternity</option>
+                  <option value="Emergency">Emergency</option>
+                  <option value="Dental">Dental</option>
+                  <option value="Pediatric">Pediatric</option>
+                </select>
+
+                {state.meta.errors.length > 0 && (
+                  <p className="text-red-600">
+                    {getErrorMessage(state.meta.errors[0])}
+                  </p>
+                )}
+              </div>
+            )}
+          </Field>
+
+          <Field
+            name="latitude"
+            validators={{ onBlur: hospitalSchema.shape.latitude }}
+          >
+            {({ state, handleChange }) => (
               <Input
-                label="Name"
+                label="Latitude"
+                type="number"
                 value={state.value ?? ""}
-                onChange={(e) => handleChange(e.target.value)}
+                onChange={(e) => handleChange(Number(e.target.value))}
               />
-              {state.meta.errors.length > 0 && (
-                <p className="text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
+            )}
+          </Field>
 
-        <Field name="address" validators={{ onBlur: hospitalSchema.shape.address }}>
-          {({ state, handleChange }) => (
-            <>
+          <Field
+            name="longitude"
+            validators={{ onBlur: hospitalSchema.shape.longitude }}
+          >
+            {({ state, handleChange }) => (
               <Input
-                label="Address"
+                label="Longitude"
+                type="number"
                 value={state.value ?? ""}
-                onChange={(e) => handleChange(e.target.value)}
+                onChange={(e) => handleChange(Number(e.target.value))}
               />
-              {state.meta.errors.length > 0 && (
-                <p className="text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
+            )}
+          </Field>
 
-        <Field name="city" validators={{ onBlur: hospitalSchema.shape.city }}>
-          {({ state, handleChange }) => (
-            <>
-              <Input
-                label="City"
-                value={state.value ?? ""}
-                onChange={(e) => handleChange(e.target.value)}
+          <Subscribe
+            selector={(state) => ({
+              canSubmit: state.canSubmit,
+              isSubmitting: state.isSubmitting,
+            })}
+          >
+            {({ canSubmit, isSubmitting }) => (
+              <Button
+                type="submit"
+                disabled={!canSubmit}
+                text={isSubmitting ? "Updating..." : "Update Hospital"}
               />
-              {state.meta.errors.length > 0 && (
-                <p className="text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field name="lga" validators={{ onBlur: hospitalSchema.shape.lga }}>
-          {({ state, handleChange }) => (
-            <>
-              <Input
-                label="LGA"
-                value={state.value ?? ""}
-                onChange={(e) => handleChange(e.target.value)}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field name="phone" validators={{ onBlur: hospitalSchema.shape.phone }}>
-          {({ state, handleChange }) => (
-            <>
-              <Input
-                label="Phone"
-                value={state.value ?? ""}
-                onChange={(e) => handleChange(e.target.value)}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field name="email" validators={{ onBlur: hospitalSchema.shape.email }}>
-          {({ state, handleChange }) => (
-            <>
-              <Input
-                label="Email"
-                value={state.value ?? ""}
-                onChange={(e) => handleChange(e.target.value)}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field name="specialty" validators={{ onBlur: hospitalSchema.shape.specialty }}>
-          {({ state, handleChange }) => (
-            <div>
-              <label>Specialty</label>
-
-              <select
-                name="specialty"
-                value={state.value ?? ""}
-                onChange={(e) => handleChange(e.target.value)}
-              >
-                <option value="">Select Specialty</option>
-                <option value="Maternity">Maternity</option>
-                <option value="Emergency">Emergency</option>
-                <option value="Dental">Dental</option>
-                <option value="Pediatric">Pediatric</option>
-              </select>
-
-              {state.meta.errors.length > 0 && (
-                <p className="text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </div>
-          )}
-        </Field>
-
-        <Field name="latitude" validators={{ onBlur: hospitalSchema.shape.latitude }}>
-          {({ state, handleChange }) => (
-            <Input
-              label="Latitude"
-              type="number"
-              value={state.value ?? ""}
-              onChange={(e) => handleChange(Number(e.target.value))}
-            />
-          )}
-        </Field>
-
-        <Field name="longitude" validators={{ onBlur: hospitalSchema.shape.longitude }}>
-          {({ state, handleChange }) => (
-            <Input
-              label="Longitude"
-              type="number"
-              value={state.value ?? ""}
-              onChange={(e) => handleChange(Number(e.target.value))}
-            />
-          )}
-        </Field>
-
-        <Subscribe selector={(state) => ({
-          canSubmit: state.canSubmit,
-          isSubmitting: state.isSubmitting,
-        })}>
-          {({ canSubmit, isSubmitting }) => (
-            <Button
-              type="submit"
-              disabled={!canSubmit}
-              text={isSubmitting ? "Updating..." : "Update Hospital"}
-            />
-          )}
-        </Subscribe>
-      </form>
+            )}
+          </Subscribe>
+        </form>
+      </section>
     </main>
   );
 }
