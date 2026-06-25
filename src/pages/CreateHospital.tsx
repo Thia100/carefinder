@@ -7,6 +7,7 @@ import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
 import { supabase } from "../lib/supabase";
 import MDEditor from "@uiw/react-md-editor";
+import { BackButton } from "../components/ui/BackButton";
 
 const hospitalSchema = z.object({
   name: z.string().min(1, "Hospital name is required"),
@@ -104,361 +105,392 @@ export function CreateHospital() {
   const { Field, Subscribe } = form;
 
   return (
-    <main>
-      <h1>Create Hospital</h1>
-      <form
-        noValidate
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-      >
-        <Field name="name" validators={{ onBlur: hospitalSchema.shape.name }}>
-          {({ state, handleBlur, handleChange }) => (
-            <>
-              <Input
-                label="Name"
-                required
-                id="name"
-                type="text"
-                placeholder="Enter a name"
+    <main className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-5xl mx-auto p-2">
+        <BackButton />
+        <section className="max-w-3xl mx-auto p-4">
+          <h1 className="text-3xl font-bold mb-6">Create Hospital</h1>
+          <form
+            noValidate
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              form.handleSubmit();
+            }}
+            className="space-y-8"
+          >
+            {/* Basic Information */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Field
                 name="name"
-                value={state.value}
-                onChange={(e) => handleChange(e.target.value)}
-                onBlur={handleBlur}
-                aria-invalid={!!state.meta.errors?.length}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="mt-1 text-sm text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field
-          name="address"
-          validators={{ onBlur: hospitalSchema.shape.address }}
-        >
-          {({ state, handleBlur, handleChange }) => (
-            <>
-              <Input
-                label="Address"
-                required
-                type="text"
-                placeholder="123, Akindoyin street"
-                name="address"
-                value={state.value}
-                onBlur={handleBlur}
-                onChange={(e) => handleChange(e.target.value)}
-                aria-invalid={!!state.meta.errors?.length}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="mt-1 text-sm text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field name="file">
-          {({ state, handleBlur }) => (
-            <>
-              <Input
-                label="Upload file"
-                type="file"
-                name="file"
-                accept="image/*"
-                value={state.value}
-                onBlur={handleBlur}
-                onChange={(e) => setImage(e.target.files?.[0] ?? null)}
-                aria-invalid={!!state.meta.errors?.length}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="mt-1 text-sm text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field
-          name="visiting_hours"
-          validators={{ onBlur: hospitalSchema.shape.visiting_hours }}
-        >
-          {({ state, handleChange }) => (
-            <>
-              <label>Visiting Hours</label>
-
-              <MDEditor
-                value={state.value}
-                onChange={(value) => handleChange(value || "")}
-              />
-
-              {state.meta.errors.length > 0 && (
-                <p>{getErrorMessage(state.meta.errors[0])}</p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field name="notes" validators={{ onBlur: hospitalSchema.shape.notes }}>
-          {({ state, handleChange , handleBlur}) => (
-            <>
-              <label htmlFor="notes">Notes</label>
-              <MDEditor
-                value={state.value}
-                onChange={(value) => handleChange(value || "")}
-                onBlur={handleBlur}
-                id="notes"
-              ></MDEditor>
-
-              {state.meta.errors.length > 0 && (
-                <p>{getErrorMessage(state.meta.errors[0])}</p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field name="city" validators={{ onBlur: hospitalSchema.shape.city }}>
-          {({ state, handleBlur, handleChange }) => (
-            <>
-              <Input
-                label="City"
-                required
-                type="text"
-                placeholder="Ile-Ife"
-                name="city"
-                value={state.value}
-                onBlur={handleBlur}
-                onChange={(e) => handleChange(e.target.value)}
-                aria-invalid={!!state.meta.errors?.length}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="mt-1 text-sm text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field name="lga" validators={{ onBlur: hospitalSchema.shape.lga }}>
-          {({ state, handleBlur, handleChange }) => (
-            <>
-              <Input
-                label="Local Government Area"
-                type="text"
-                placeholder="Boripe"
-                name="lga"
-                value={state.value}
-                onBlur={handleBlur}
-                onChange={(e) => handleChange(e.target.value)}
-                aria-invalid={!!state.meta.errors?.length}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="mt-1 text-sm text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field name="phone" validators={{ onBlur: hospitalSchema.shape.phone }}>
-          {({ state, handleBlur, handleChange }) => (
-            <>
-              <Input
-                label="Phone Number"
-                required
-                type="tel"
-                placeholder="+23481567809"
-                name="phone"
-                value={state.value}
-                onBlur={handleBlur}
-                onChange={(e) => handleChange(e.target.value)}
-                aria-invalid={!!state.meta.errors?.length}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="mt-1 text-sm text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field name="email" validators={{ onBlur: hospitalSchema.shape.email }}>
-          {({ state, handleBlur, handleChange }) => (
-            <>
-              <Input
-                label="Email Address"
-                required
-                type="email"
-                placeholder="thegbolahan@gmail.com"
-                name="email"
-                value={state.value}
-                onBlur={handleBlur}
-                onChange={(e) => handleChange(e.target.value)}
-                aria-invalid={!!state.meta.errors?.length}
-              />
-              {state.meta.errors.length > 0 && (
-                <p className="mt-1 text-sm text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field
-          name="description"
-          validators={{ onBlur: hospitalSchema.shape.description }}
-        >
-          {({ state, handleChange, handleBlur }) => (
-            <>
-              <label htmlFor="description">Description</label>
-              <MDEditor
-                value={state.value}
-                onChange={(value) => handleChange(value || "")}
-                onBlur={handleBlur}
-                id="description"
-              ></MDEditor>
-
-              {state.meta.errors.length > 0 && (
-                <p className="mt-1 text-sm text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field
-          name="ownership_type"
-          validators={{ onBlur: hospitalSchema.shape.ownership_type }}
-        >
-          {({ state, handleChange }) => (
-            <>
-              <p>Ownership Type</p>
-
-              <label>
-                <input
-                  type="radio"
-                  name="ownership_type"
-                  value="Public"
-                  checked={state.value === "Public"}
-                  onChange={(e) => handleChange(e.target.value)}
-                />
-                Public
-              </label>
-
-              <label>
-                <input
-                  type="radio"
-                  name="ownership_type"
-                  value="Private"
-                  checked={state.value === "Private"}
-                  onChange={(e) => handleChange(e.target.value)}
-                />
-                Private
-              </label>
-
-              {state.meta.errors.length > 0 && (
-                <p className="text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
-            </>
-          )}
-        </Field>
-
-        <Field
-          name="specialty"
-          validators={{ onBlur: hospitalSchema.shape.specialty }}
-        >
-          {({ state, handleChange }) => (
-            <div>
-              <label htmlFor="specialty">Specialty</label>
-
-              <select
-                id="specialty"
-                value={state.value}
-                onChange={(e) => handleChange(e.target.value)}
+                validators={{ onBlur: hospitalSchema.shape.name }}
               >
-                <option value="">Select Specialty</option>
+                {({ state, handleBlur, handleChange }) => (
+                  <>
+                    <Input
+                      label="Name"
+                      required
+                      id="name"
+                      type="text"
+                      placeholder="Enter a name"
+                      name="name"
+                      value={state.value}
+                      onChange={(e) => handleChange(e.target.value)}
+                      onBlur={handleBlur}
+                      aria-invalid={!!state.meta.errors?.length}
+                    />
+                    {state.meta.errors.length > 0 && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {getErrorMessage(state.meta.errors[0])}
+                      </p>
+                    )}
+                  </>
+                )}
+              </Field>
 
-                <option value="Maternity">Maternity</option>
+              <Field
+                name="address"
+                validators={{ onBlur: hospitalSchema.shape.address }}
+              >
+                {({ state, handleBlur, handleChange }) => (
+                  <>
+                    <Input
+                      label="Address"
+                      required
+                      type="text"
+                      placeholder="123, Akindoyin street"
+                      name="address"
+                      value={state.value}
+                      onBlur={handleBlur}
+                      onChange={(e) => handleChange(e.target.value)}
+                      aria-invalid={!!state.meta.errors?.length}
+                    />
+                    {state.meta.errors.length > 0 && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {getErrorMessage(state.meta.errors[0])}
+                      </p>
+                    )}
+                  </>
+                )}
+              </Field>
 
-                <option value="Emergency">Emergency</option>
+              <Field
+                name="email"
+                validators={{ onBlur: hospitalSchema.shape.email }}
+              >
+                {({ state, handleBlur, handleChange }) => (
+                  <>
+                    <Input
+                      label="Email Address"
+                      required
+                      type="email"
+                      placeholder="thegbolahan@gmail.com"
+                      name="email"
+                      value={state.value}
+                      onBlur={handleBlur}
+                      onChange={(e) => handleChange(e.target.value)}
+                      aria-invalid={!!state.meta.errors?.length}
+                    />
+                    {state.meta.errors.length > 0 && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {getErrorMessage(state.meta.errors[0])}
+                      </p>
+                    )}
+                  </>
+                )}
+              </Field>
 
-                <option value="Dental">Dental</option>
-
-                <option value="Pediatric">Pediatric</option>
-              </select>
-
-              {state.meta.errors.length > 0 && (
-                <p className="text-red-600">
-                  {getErrorMessage(state.meta.errors[0])}
-                </p>
-              )}
+              <Field
+                name="phone"
+                validators={{ onBlur: hospitalSchema.shape.phone }}
+              >
+                {({ state, handleBlur, handleChange }) => (
+                  <>
+                    <Input
+                      label="Phone Number"
+                      required
+                      type="tel"
+                      placeholder="+23481567809"
+                      name="phone"
+                      value={state.value}
+                      onBlur={handleBlur}
+                      onChange={(e) => handleChange(e.target.value)}
+                      aria-invalid={!!state.meta.errors?.length}
+                    />
+                    {state.meta.errors.length > 0 && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {getErrorMessage(state.meta.errors[0])}
+                      </p>
+                    )}
+                  </>
+                )}
+              </Field>
             </div>
-          )}
-        </Field>
 
-        <div>
-          <Field
-            name="latitude"
-            validators={{ onBlur: hospitalSchema.shape.latitude }}
-          >
-            {({ state, handleChange }) => (
-              <>
-                <Input
-                  label="Latitude"
-                  type="number"
-                  value={String(state.value)}
-                  onChange={(e) => handleChange(Number(e.target.value))}
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Field
+                name="lga"
+                validators={{ onBlur: hospitalSchema.shape.lga }}
+              >
+                {({ state, handleBlur, handleChange }) => (
+                  <>
+                    <Input
+                      label="Local Government Area"
+                      type="text"
+                      placeholder="Boripe"
+                      name="lga"
+                      value={state.value}
+                      onBlur={handleBlur}
+                      onChange={(e) => handleChange(e.target.value)}
+                      aria-invalid={!!state.meta.errors?.length}
+                    />
+                    {state.meta.errors.length > 0 && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {getErrorMessage(state.meta.errors[0])}
+                      </p>
+                    )}
+                  </>
+                )}
+              </Field>
+
+              <Field
+                name="city"
+                validators={{ onBlur: hospitalSchema.shape.city }}
+              >
+                {({ state, handleBlur, handleChange }) => (
+                  <>
+                    <Input
+                      label="City"
+                      required
+                      type="text"
+                      placeholder="Ile-Ife"
+                      name="city"
+                      value={state.value}
+                      onBlur={handleBlur}
+                      onChange={(e) => handleChange(e.target.value)}
+                      aria-invalid={!!state.meta.errors?.length}
+                    />
+                    {state.meta.errors.length > 0 && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {getErrorMessage(state.meta.errors[0])}
+                      </p>
+                    )}
+                  </>
+                )}
+              </Field>
+
+              <Field
+                name="latitude"
+                validators={{ onBlur: hospitalSchema.shape.latitude }}
+              >
+                {({ state, handleChange }) => (
+                  <>
+                    <Input
+                      label="Latitude"
+                      type="number"
+                      value={String(state.value)}
+                      onChange={(e) => handleChange(Number(e.target.value))}
+                    />
+                  </>
+                )}
+              </Field>
+
+              <Field
+                name="longitude"
+                validators={{ onBlur: hospitalSchema.shape.longitude }}
+              >
+                {({ state, handleChange }) => (
+                  <>
+                    <Input
+                      label="Longitude"
+                      type="number"
+                      value={String(state.value)}
+                      onChange={(e) => handleChange(Number(e.target.value))}
+                    />
+                  </>
+                )}
+              </Field>
+            </div>
+
+            <div className="grid sm:grid-cols-2">
+              <Field
+                name="specialty"
+                validators={{ onBlur: hospitalSchema.shape.specialty }}
+              >
+                {({ state, handleChange }) => (
+                  <div>
+                    <label htmlFor="specialty">Specialty</label>
+
+                    <select
+                      id="specialty"
+                      value={state.value}
+                      onChange={(e) => handleChange(e.target.value)}
+                    >
+                      <option value="">Select Specialty</option>
+
+                      <option value="Maternity">Maternity</option>
+
+                      <option value="Emergency">Emergency</option>
+
+                      <option value="Dental">Dental</option>
+
+                      <option value="Pediatric">Pediatric</option>
+                    </select>
+
+                    {state.meta.errors.length > 0 && (
+                      <p className="text-red-600">
+                        {getErrorMessage(state.meta.errors[0])}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </Field>
+
+              <Field
+                name="ownership_type"
+                validators={{ onBlur: hospitalSchema.shape.ownership_type }}
+              >
+                {({ state, handleChange }) => (
+                  <div>
+                    <p>Ownership Type</p>
+
+                    <div>
+                      <label>
+                        <input
+                          type="radio"
+                          name="ownership_type"
+                          value="Public"
+                          checked={state.value === "Public"}
+                          onChange={(e) => handleChange(e.target.value)}
+                        />
+                        Public
+                      </label>
+
+                      <label>
+                        <input
+                          type="radio"
+                          name="ownership_type"
+                          value="Private"
+                          checked={state.value === "Private"}
+                          onChange={(e) => handleChange(e.target.value)}
+                        />
+                        Private
+                      </label>
+                    </div>
+
+                    {state.meta.errors.length > 0 && (
+                      <p className="text-red-600">
+                        {getErrorMessage(state.meta.errors[0])}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </Field>
+            </div>
+
+            <Field
+              name="visiting_hours"
+              validators={{ onBlur: hospitalSchema.shape.visiting_hours }}
+            >
+              {({ state, handleChange }) => (
+                <>
+                  <label>Visiting Hours</label>
+
+                  <MDEditor
+                    value={state.value}
+                    onChange={(value) => handleChange(value || "")}
+                  />
+
+                  {state.meta.errors.length > 0 && (
+                    <p>{getErrorMessage(state.meta.errors[0])}</p>
+                  )}
+                </>
+              )}
+            </Field>
+
+            <Field
+              name="notes"
+              validators={{ onBlur: hospitalSchema.shape.notes }}
+            >
+              {({ state, handleChange, handleBlur }) => (
+                <>
+                  <label htmlFor="notes">Notes</label>
+                  <MDEditor
+                    value={state.value}
+                    onChange={(value) => handleChange(value || "")}
+                    onBlur={handleBlur}
+                    id="notes"
+                  ></MDEditor>
+
+                  {state.meta.errors.length > 0 && (
+                    <p>{getErrorMessage(state.meta.errors[0])}</p>
+                  )}
+                </>
+              )}
+            </Field>
+
+            <Field
+              name="description"
+              validators={{ onBlur: hospitalSchema.shape.description }}
+            >
+              {({ state, handleChange, handleBlur }) => (
+                <>
+                  <label htmlFor="description">Description</label>
+                  <MDEditor
+                    value={state.value}
+                    onChange={(value) => handleChange(value || "")}
+                    onBlur={handleBlur}
+                    id="description"
+                  ></MDEditor>
+
+                  {state.meta.errors.length > 0 && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {getErrorMessage(state.meta.errors[0])}
+                    </p>
+                  )}
+                </>
+              )}
+            </Field>
+
+            <Field name="file">
+              {({ state, handleBlur }) => (
+                <>
+                  <Input
+                    label="Upload file"
+                    type="file"
+                    name="file"
+                    accept="image/*"
+                    value={state.value}
+                    onBlur={handleBlur}
+                    onChange={(e) => setImage(e.target.files?.[0] ?? null)}
+                    aria-invalid={!!state.meta.errors?.length}
+                  />
+                  {state.meta.errors.length > 0 && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {getErrorMessage(state.meta.errors[0])}
+                    </p>
+                  )}
+                </>
+              )}
+            </Field>
+
+            <Subscribe
+              selector={(state) => ({
+                canSubmit: state.canSubmit,
+                isSubmitting: state.isSubmitting,
+              })}
+            >
+              {({ canSubmit, isSubmitting }) => (
+                <Button
+                  type="submit"
+                  disabled={!canSubmit}
+                  text={isSubmitting ? "Creating..." : "Create Hospital"}
                 />
-              </>
-            )}
-          </Field>
-
-          <Field
-            name="longitude"
-            validators={{ onBlur: hospitalSchema.shape.longitude }}
-          >
-            {({ state, handleChange }) => (
-              <>
-                <Input
-                  label="Longitude"
-                  type="number"
-                  value={String(state.value)}
-                  onChange={(e) => handleChange(Number(e.target.value))}
-                />
-              </>
-            )}
-          </Field>
-        </div>
-
-        <Subscribe
-          selector={(state) => ({
-            canSubmit: state.canSubmit,
-            isSubmitting: state.isSubmitting,
-          })}
-        >
-          {({ canSubmit, isSubmitting }) => (
-            <Button
-              type="submit"
-              disabled={!canSubmit}
-              text={isSubmitting ? "Creating..." : "Create Hospital"}
-            />
-          )}
-        </Subscribe>
-      </form>
+              )}
+            </Subscribe>
+          </form>
+        </section>
+      </div>
     </main>
   );
 }

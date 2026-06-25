@@ -47,7 +47,6 @@ export function Input({
           ${className}
         `}
       />
-
       {error && (
         <p className="text-xs text-red-500">
           {error}

@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import type { Hospital } from "../types/hospital";
+import { Spinner } from "../components/ui/spinner";
+import { BackHome } from "../components/ui/BackHome";
+import { BackButton } from "../components/ui/BackButton";
 
 
 export function ManageHospitals() {
@@ -28,12 +31,13 @@ export function ManageHospitals() {
   }
 
   if (loading) {
-    return <p>Loading hospitals...</p>;
+    return <Spinner />;
   }
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
+        <BackButton />
         <h1 className="text-3xl font-bold mb-6">
           Manage Hospitals
         </h1>
