@@ -1,6 +1,7 @@
 import { getHospitals } from "../features/auth/api/getHospitals";
 import { useState, useEffect } from "react";
 import type { Hospital } from "../types/hospital";
+import { ExportCsvButton } from "./ExportCsvButton";
 import { HospitalCard } from "./HospitalCard";
 import { Input } from "./ui/Input";
 
@@ -18,6 +19,8 @@ export function HospitalFilter() {
     }
     load();
   }, []);
+
+  
 
   const query = search.trim().toLowerCase();
   const filteredHospitals = hospitals.filter((hospital) => {
@@ -40,8 +43,11 @@ export function HospitalFilter() {
 
   return (
     <div>
-      <div className="sticky top-4 z-10 bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl shadow-sm p-4 mb-12">
-        <p className="mt-2 text-slate-600 text-sm text-center">Search hospitals by name, city, specialty, or ownership type.</p>
+      <div className="sticky top-4 z-10 bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl shadow-sm p-4 my-12">
+        <div></div>
+        <p className="my-2 text-slate-600 text-sm text-center">
+          Search hospitals by name, city, specialty, or ownership type.
+        </p>
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr] lg:items-center gap-3">
           <Input
             placeholder="Search hospitals, city, or LGA..."
@@ -73,13 +79,18 @@ export function HospitalFilter() {
         </div>
       </div>
 
-      
-        <p className="text-sm text-gray-600 mb-4">
+      <div className="flex justify-between items-center mb-4">
+        <p className="text-sm text-gray-600">
           Showing{" "}
           <span className="font-semibold">{filteredHospitals.length}</span>{" "}
           hospitals
         </p>
-      
+        
+        <div className="flex gap-3">
+          <ExportCsvButton hospitals={filteredHospitals} search={search}/>
+          <button>Share</button>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filteredHospitals.map((hospital) => (
