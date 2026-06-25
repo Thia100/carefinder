@@ -73,7 +73,7 @@ export function CreateHospital() {
         const fileName = `${Date.now()}-${image.name}`;
 
         const { error: uploadError } = await supabase.storage
-          .from("hospital-images")
+          .from("hospital-image")
           .upload(fileName, image);
 
         if (uploadError) {
@@ -82,7 +82,7 @@ export function CreateHospital() {
         }
 
         const { data } = supabase.storage
-          .from("hospital-images")
+          .from("hospital-image")
           .getPublicUrl(fileName);
 
         imageUrl = data.publicUrl;
@@ -90,7 +90,7 @@ export function CreateHospital() {
 
       const { error } = await supabase
         .from("hospitals")
-        .insert([{ ...value, image_Url: imageUrl }]);
+        .insert([{ ...value, image_url: imageUrl }]);
 
       if (error) {
         toast.error(error.message);
@@ -126,7 +126,7 @@ export function CreateHospital() {
                 validators={{ onBlur: hospitalSchema.shape.name }}
               >
                 {({ state, handleBlur, handleChange }) => (
-                  <>
+                  <div>
                     <Input
                       label="Name"
                       required
@@ -144,7 +144,7 @@ export function CreateHospital() {
                         {getErrorMessage(state.meta.errors[0])}
                       </p>
                     )}
-                  </>
+                  </div>
                 )}
               </Field>
 
@@ -153,7 +153,7 @@ export function CreateHospital() {
                 validators={{ onBlur: hospitalSchema.shape.address }}
               >
                 {({ state, handleBlur, handleChange }) => (
-                  <>
+                  <div>
                     <Input
                       label="Address"
                       required
@@ -170,7 +170,7 @@ export function CreateHospital() {
                         {getErrorMessage(state.meta.errors[0])}
                       </p>
                     )}
-                  </>
+                  </div>
                 )}
               </Field>
 
@@ -179,7 +179,7 @@ export function CreateHospital() {
                 validators={{ onBlur: hospitalSchema.shape.email }}
               >
                 {({ state, handleBlur, handleChange }) => (
-                  <>
+                  <div>
                     <Input
                       label="Email Address"
                       required
@@ -196,7 +196,7 @@ export function CreateHospital() {
                         {getErrorMessage(state.meta.errors[0])}
                       </p>
                     )}
-                  </>
+                  </div>
                 )}
               </Field>
 
@@ -205,12 +205,12 @@ export function CreateHospital() {
                 validators={{ onBlur: hospitalSchema.shape.phone }}
               >
                 {({ state, handleBlur, handleChange }) => (
-                  <>
+                  <div>
                     <Input
                       label="Phone Number"
                       required
                       type="tel"
-                      placeholder="+23481567809"
+                      placeholder="081567809"
                       name="phone"
                       value={state.value}
                       onBlur={handleBlur}
@@ -222,7 +222,7 @@ export function CreateHospital() {
                         {getErrorMessage(state.meta.errors[0])}
                       </p>
                     )}
-                  </>
+                  </div>
                 )}
               </Field>
             </div>
@@ -233,7 +233,7 @@ export function CreateHospital() {
                 validators={{ onBlur: hospitalSchema.shape.lga }}
               >
                 {({ state, handleBlur, handleChange }) => (
-                  <>
+                  <div>
                     <Input
                       label="Local Government Area"
                       type="text"
@@ -249,7 +249,7 @@ export function CreateHospital() {
                         {getErrorMessage(state.meta.errors[0])}
                       </p>
                     )}
-                  </>
+                  </div>
                 )}
               </Field>
 
@@ -258,7 +258,7 @@ export function CreateHospital() {
                 validators={{ onBlur: hospitalSchema.shape.city }}
               >
                 {({ state, handleBlur, handleChange }) => (
-                  <>
+                  <div>
                     <Input
                       label="City"
                       required
@@ -275,7 +275,7 @@ export function CreateHospital() {
                         {getErrorMessage(state.meta.errors[0])}
                       </p>
                     )}
-                  </>
+                  </div>
                 )}
               </Field>
 
@@ -284,14 +284,14 @@ export function CreateHospital() {
                 validators={{ onBlur: hospitalSchema.shape.latitude }}
               >
                 {({ state, handleChange }) => (
-                  <>
+                  <div>
                     <Input
                       label="Latitude"
                       type="number"
                       value={String(state.value)}
                       onChange={(e) => handleChange(Number(e.target.value))}
                     />
-                  </>
+                  </div>
                 )}
               </Field>
 
@@ -300,14 +300,14 @@ export function CreateHospital() {
                 validators={{ onBlur: hospitalSchema.shape.longitude }}
               >
                 {({ state, handleChange }) => (
-                  <>
+                  <div>
                     <Input
                       label="Longitude"
                       type="number"
                       value={String(state.value)}
                       onChange={(e) => handleChange(Number(e.target.value))}
                     />
-                  </>
+                  </div>
                 )}
               </Field>
             </div>
@@ -393,18 +393,18 @@ export function CreateHospital() {
               validators={{ onBlur: hospitalSchema.shape.visiting_hours }}
             >
               {({ state, handleChange }) => (
-                <>
+                <div>
                   <label>Visiting Hours</label>
-
-                  <MDEditor
-                    value={state.value}
-                    onChange={(value) => handleChange(value || "")}
-                  />
-
+                  <div data-color-mode="light">
+                    <MDEditor
+                      value={state.value}
+                      onChange={(value) => handleChange(value || "")}
+                    />
+                  </div>
                   {state.meta.errors.length > 0 && (
                     <p>{getErrorMessage(state.meta.errors[0])}</p>
                   )}
-                </>
+                </div>
               )}
             </Field>
 
@@ -413,19 +413,20 @@ export function CreateHospital() {
               validators={{ onBlur: hospitalSchema.shape.notes }}
             >
               {({ state, handleChange, handleBlur }) => (
-                <>
+                <div>
                   <label htmlFor="notes">Notes</label>
-                  <MDEditor
-                    value={state.value}
-                    onChange={(value) => handleChange(value || "")}
-                    onBlur={handleBlur}
-                    id="notes"
-                  ></MDEditor>
-
+                  <div data-color-mode="light">
+                    <MDEditor
+                      value={state.value}
+                      onChange={(value) => handleChange(value || "")}
+                      onBlur={handleBlur}
+                      id="notes"
+                    ></MDEditor>
+                  </div>
                   {state.meta.errors.length > 0 && (
                     <p>{getErrorMessage(state.meta.errors[0])}</p>
                   )}
-                </>
+                </div>
               )}
             </Field>
 
@@ -434,27 +435,28 @@ export function CreateHospital() {
               validators={{ onBlur: hospitalSchema.shape.description }}
             >
               {({ state, handleChange, handleBlur }) => (
-                <>
+                <div>
                   <label htmlFor="description">Description</label>
-                  <MDEditor
-                    value={state.value}
-                    onChange={(value) => handleChange(value || "")}
-                    onBlur={handleBlur}
-                    id="description"
-                  ></MDEditor>
-
+                  <div data-color-mode="light">
+                    <MDEditor
+                      value={state.value}
+                      onChange={(value) => handleChange(value || "")}
+                      onBlur={handleBlur}
+                      id="description"
+                    ></MDEditor>
+                  </div>
                   {state.meta.errors.length > 0 && (
                     <p className="mt-1 text-sm text-red-600">
                       {getErrorMessage(state.meta.errors[0])}
                     </p>
                   )}
-                </>
+                </div>
               )}
             </Field>
 
             <Field name="file">
               {({ state, handleBlur }) => (
-                <>
+                <div>
                   <Input
                     label="Upload file"
                     type="file"
@@ -470,7 +472,7 @@ export function CreateHospital() {
                       {getErrorMessage(state.meta.errors[0])}
                     </p>
                   )}
-                </>
+                </div>
               )}
             </Field>
 
