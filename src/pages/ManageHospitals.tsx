@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import type { Hospital } from "../types/hospital";
 import { Spinner } from "../components/ui/spinner";
-import { BackHome } from "../components/ui/BackHome";
 import { BackButton } from "../components/ui/BackButton";
 
 
