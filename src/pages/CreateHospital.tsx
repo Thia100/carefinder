@@ -313,6 +313,7 @@ export function CreateHospital() {
             </div>
 
             <div className="grid sm:grid-cols-2">
+               
               <Field
                 name="specialty"
                 validators={{ onBlur: hospitalSchema.shape.specialty }}
