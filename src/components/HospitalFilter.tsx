@@ -4,13 +4,19 @@ import type { Hospital } from "../types/hospital";
 import { ExportCsvButton } from "./ExportCsvButton";
 import { HospitalCard } from "./HospitalCard";
 import { Input } from "./ui/Input";
+import { useSearchParams } from "react-router-dom";
+import { ShareButton } from "./ShareButton";
 
 export function HospitalFilter() {
-  const [search, setSearch] = useState("");
+
+  const [searchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
+
+  const [search, setSearch] = useState(searchParams.get("search") ?? "");
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
 
-  const [specialty, setSpecialty] = useState("");
-  const [ownershipType, setOwnershipType] = useState("");
+  const [specialty, setSpecialty] = useState(searchParams.get("specialty") ?? "");
+  const [ownershipType, setOwnershipType] = useState(searchParams.get("ownership") ?? "");
 
   useEffect(() => {
     async function load() {
@@ -19,6 +25,17 @@ export function HospitalFilter() {
     }
     load();
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    if (search) params.set("search", search);
+    if (specialty) params.set("specialty", specialty);
+    if (ownershipType)
+        params.set("ownership", ownershipType);
+
+    setSearchParams(params);
+}, [search, specialty, ownershipType]);
 
   
 
@@ -88,7 +105,7 @@ export function HospitalFilter() {
         
         <div className="flex gap-3">
           <ExportCsvButton hospitals={filteredHospitals} search={search}/>
-          <button>Share</button>
+          <ShareButton search={search} specialty={specialty} ownershipType={ownershipType}/>
         </div>
       </div>
 
