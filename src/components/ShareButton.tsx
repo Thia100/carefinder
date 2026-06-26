@@ -24,7 +24,7 @@ export function ShareButton({ search, specialty, ownershipType }: Props) {
   }
   return (
     <>
-      <button onClick={copyLink} className="cursor-pointer">
+      <button onClick={copyLink} className="cursor-pointer" title="Share hospitals">
         <FontAwesomeIcon icon={faShareNodes} />
       </button>
     </>

@@ -96,7 +96,17 @@ export function HospitalDetails() {
         </div>
 
         <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] shadow-sm">
-          <h1 className="text-3xl font-bold text-[#122056]">{hospital.name}</h1>
+          <div>
+            <img
+              src={hospital.image_url ?? ""}
+              alt={hospital.name}
+              className="h-95 w-full rounded-3xl object-cover border border-[#EEEFFD]"
+            />
+          </div>
+
+          <h1 className="text-3xl font-bold text-[#122056] capitalize mt-10 mb-5">
+            {hospital.name}
+          </h1>
 
           <div className="flex items-center gap-3 mt-3">
             <span className="px-3 py-1 rounded-lg bg-[#EEEFFD] text-[#5B65DC] text-sm font-medium">
@@ -107,41 +117,62 @@ export function HospitalDetails() {
             </span>
           </div>
 
-          <div className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-sm mt-6 space-y-2">
-            <p>
-              <strong>Address:</strong> {hospital.address}
-            </p>
-            <p>
-              <strong>City:</strong> {hospital.city}
-            </p>
-            <p>
-              <strong>LGA:</strong> {hospital.lga}
-            </p>
-            <p>
-              <strong>Phone:</strong> {hospital.phone}
-            </p>
-            <p>
-              <strong>Email:</strong> {hospital.email}
-            </p>
-            <p>
-              <strong>Specialty:</strong> {hospital.specialty}
-            </p>
-            <p>
-              <strong>Ownership:</strong> {hospital.ownership_type}
-            </p>
-            <p>
-              <strong>Visiting hours:</strong> {hospital.visiting_hours}
-            </p>
-          </div>
+          <div className=" grid md:grid-cols-2 text-sm w-full gap-10">
+            <div className="flex flex-col gap-2 mt-8">
+              <p>
+                <strong>Address:</strong> {hospital.address}
+              </p>
+              <p>
+                <strong>City:</strong> {hospital.city}
+              </p>
+              <p>
+                <strong>LGA:</strong> {hospital.lga}
+              </p>
+              <p>
+                <strong>Phone:</strong> {hospital.phone}
+              </p>
+              <p>
+                <strong>Email:</strong> {hospital.email}
+              </p>
+              <p>
+                <strong>Specialty:</strong> {hospital.specialty}
+              </p>
+              <p>
+                <strong>Ownership:</strong> {hospital.ownership_type}
+              </p>
+            </div>
 
-          <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] mt-4">
-            <h2 className="text-xl font-semibold text-[#122056] mb-4">
-              About this Hospital
-            </h2>
-            <div className="prose prose-slate max-w-none">
-              <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
-                {hospital.description}
-              </ReactMarkdown>
+            <div>
+              <div className="bg-white rounded-3xl py-2 px-4 border border-[#EEEFFD]">
+                <h2 className="text-lg font-semibold text-[#122056] mb-3">
+                  About this Hospital
+                </h2>
+                <div className="prose prose-slate">
+                  <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
+                    {hospital.description}
+                  </ReactMarkdown>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] mt-4">
+                <h2 className="text-lg font-semibold text-[#122056]">Notes</h2>
+                <div className="prose prose-slate max-w-none">
+                  <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
+                    {hospital.notes}
+                  </ReactMarkdown>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] mt-4">
+                <h2 className="text-lg font-semibold text-[#122056]">
+                  Visiting Hours
+                </h2>
+                <div>
+                  <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
+                    {hospital.visiting_hours}
+                  </ReactMarkdown>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -157,7 +188,9 @@ export function HospitalDetails() {
                   key={review.id}
                   className="rounded-2xl border border-[#EEEFFD] p-4 bg-[#FAFAFD]"
                 >
-                  <p className="font-semibold text-[#122056]">⭐: {review.rating}/5</p>
+                  <p className="font-semibold text-[#122056]">
+                    ⭐: {review.rating}/5
+                  </p>
                   <p className="mt-2 text-slate-600">
                     Comment: {review.comment}
                   </p>
@@ -169,7 +202,9 @@ export function HospitalDetails() {
 
         {user ? (
           <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] shadow-sm space-y-3">
-            <h2 className="text-xl font-semibold text-[#122056]">Leave a Review</h2>
+            <h2 className="text-xl font-semibold text-[#122056]">
+              Leave a Review
+            </h2>
 
             <select
               value={rating}
