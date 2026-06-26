@@ -21,7 +21,7 @@ const hospitalSchema = z.object({
   specialty: z.string().min(1, "Specialty is required"),
   ownership_type: z.string().min(1, "Ownership type is required"),
   description: z.string().min(12, "Enter description"),
-  file: z.string(),
+  image_url: z.string(),
   latitude: z
     .number()
     .min(-90, "Latitude must be at least -90")
@@ -58,7 +58,7 @@ export function CreateHospital() {
       specialty: "",
       ownership_type: "",
       description: "",
-      file: "",
+      image_url: "",
       latitude: 0,
       longitude: 0,
       visiting_hours: "",
@@ -68,38 +68,48 @@ export function CreateHospital() {
       onSubmit: hospitalSchema,
     },
     onSubmit: async ({ value }) => {
-      let imageUrl = "";
-      if (image) {
-        const fileName = `${Date.now()}-${image.name}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from("hospital-image")
-          .upload(fileName, image);
-
-        if (uploadError) {
-          toast.error(uploadError.message);
-          return;
-        }
-
-        const { data } = supabase.storage
-          .from("hospital-image")
-          .getPublicUrl(fileName);
-
-        imageUrl = data.publicUrl;
+      if (!image) {
+        toast.error("Please select an image.");
+        return;
       }
+      if (image.size > 5 * 1024 * 1024) {
+        toast.error("Image must be under 5MB.");
+        return;
+      }
+      if (!image.type.startsWith("image/")) {
+        toast.error("Please upload a valid image.");
+        return;
+      }
+
+      let image_url = "";
+      const fileName = `${Date.now()}-${image.name}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("hospital-image")
+        .upload(fileName, image);
+
+      if (uploadError) {
+        toast.error(uploadError.message);
+        return;
+      }
+
+      const { data } = supabase.storage
+        .from("hospital-image")
+        .getPublicUrl(fileName);
+
+      image_url = data.publicUrl;
 
       const { error } = await supabase
         .from("hospitals")
-        .insert([{ ...value, image_url: imageUrl }]);
+        .insert([{ ...value, image_url }]);
 
       if (error) {
         toast.error(error.message);
         return;
       }
-      console.log(value);
-      navigate("/");
 
       toast.success("Created Successfully");
+      navigate("/");
     },
   });
   const { Field, Subscribe } = form;
@@ -313,7 +323,6 @@ export function CreateHospital() {
             </div>
 
             <div className="grid sm:grid-cols-2">
-               
               <Field
                 name="specialty"
                 validators={{ onBlur: hospitalSchema.shape.specialty }}
@@ -455,7 +464,7 @@ export function CreateHospital() {
               )}
             </Field>
 
-            <Field name="file">
+            <Field name="image_url">
               {({ state, handleBlur }) => (
                 <div>
                   <Input
