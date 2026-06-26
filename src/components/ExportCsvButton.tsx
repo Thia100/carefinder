@@ -9,7 +9,7 @@ type Props = {
   search: string;
 };
 
-export function ExportCsvButton({ hospitals }: Props) {
+export function ExportCsvButton({ hospitals, search }: Props) {
   const [open, setOpen] = useState(false);
 
   const [columns, setColumns] = useState({
@@ -65,10 +65,12 @@ export function ExportCsvButton({ hospitals }: Props) {
       type: "text/csv;charset=utf-8;",
     });
     const url = URL.createObjectURL(blob);
+    const query = search.trim().toLowerCase() || "all";
     const link = document.createElement("a");
     const today = new Date().toISOString().split("T")[0];
+
     link.href = url;
-    link.download = `hospitals-${today}.csv`;
+    link.download = `hospitals-${query}-${today}.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -157,6 +159,7 @@ export function ExportCsvButton({ hospitals }: Props) {
               </label>
             </div>
             <button
+              disabled={hospitals.length === 0}
               type="button"
               onClick={() => {
                 handleExport();
