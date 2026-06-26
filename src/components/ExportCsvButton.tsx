@@ -4,6 +4,7 @@ import type { Hospital } from "../types/hospital";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpFromBracket, faX } from "@fortawesome/free-solid-svg-icons";
 
+
 type Props = {
   hospitals: Hospital[];
   search: string;
@@ -82,7 +83,7 @@ export function ExportCsvButton({ hospitals, search }: Props) {
         type="button"
         title="Export Csv"
         onClick={() => setOpen(true)}
-        className="cursor-pointer text-lg"
+        className="cursor-pointer text-lg text-[#122056]"
       >
         <FontAwesomeIcon icon={faArrowUpFromBracket} />
       </button>
@@ -97,7 +98,7 @@ export function ExportCsvButton({ hospitals, search }: Props) {
                 onClick={() => {
                   setOpen(false);
                 }}
-                className="cursor-pointer"
+                className="cursor-pointer text-[#122056]"
               >
                 <FontAwesomeIcon icon={faX} />
               </button>

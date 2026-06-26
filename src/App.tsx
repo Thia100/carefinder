@@ -8,6 +8,7 @@ import { AdminRoute } from "./components/AdminRoute";
 import { CreateHospital } from "./pages/CreateHospital";
 import { EditHospital } from "./pages/EditHospital";
 import { ManageHospitals } from "./pages/ManageHospitals";
+import { EditReviews } from "./pages/EditReviews";
 
 import { Toaster } from "sonner";
 
@@ -29,6 +30,14 @@ function App() {
           element={
             <AdminRoute>
               <ManageHospitals />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/edit-reviews"
+          element={
+            <AdminRoute>
+              <EditReviews />
             </AdminRoute>
           }
         />

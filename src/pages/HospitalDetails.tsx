@@ -14,8 +14,8 @@ import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 
 import { Spinner } from "../components/ui/spinner";
-
 import { BackHome } from "../components/ui/BackHome";
+import placeholderImg from "../assets/images/placeholder.webp"
 
 export function HospitalDetails() {
   const [rating, setRating] = useState(5);
@@ -98,7 +98,7 @@ export function HospitalDetails() {
         <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] shadow-sm">
           <div>
             <img
-              src={hospital.image_url ?? ""}
+              src={hospital.image_url ?? placeholderImg}
               alt={hospital.name}
               className="h-95 w-full rounded-3xl object-cover border border-[#EEEFFD]"
             />
@@ -142,8 +142,9 @@ export function HospitalDetails() {
               </p>
             </div>
 
+
             <div>
-              <div className="bg-white rounded-3xl py-2 px-4 border border-[#EEEFFD]">
+              <div className="bg-white rounded-3xl p-4 border border-[#EEEFFD]">
                 <h2 className="text-lg font-semibold text-[#122056] mb-3">
                   About this Hospital
                 </h2>
@@ -154,8 +155,8 @@ export function HospitalDetails() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] mt-4">
-                <h2 className="text-lg font-semibold text-[#122056]">Notes</h2>
+              <div className="bg-white rounded-3xl p-4 border border-[#EEEFFD] mt-4">
+                <h2 className="text-lg font-semibold text-[#122056] mb-3">Notes</h2>
                 <div className="prose prose-slate max-w-none">
                   <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
                     {hospital.notes}
@@ -163,8 +164,8 @@ export function HospitalDetails() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-3xl p-8 border border-[#EEEFFD] mt-4">
-                <h2 className="text-lg font-semibold text-[#122056]">
+              <div className="bg-white rounded-3xl p-4 border border-[#EEEFFD] mt-4">
+                <h2 className="text-lg font-semibold text-[#122056] mb-3">
                   Visiting Hours
                 </h2>
                 <div>
@@ -227,7 +228,7 @@ export function HospitalDetails() {
 
             <button
               onClick={handleSubmitReview}
-              className="bg-[#122056] text-white px-5 py-3 rounded-xl font-medium hover:bg-[#5B65DC] transition-colors"
+              className="bg-[#122056] text-white px-5 py-3 rounded-xl font-medium hover:bg-[#5B65DC] transition-colors cursor-pointer"
             >
               Submit Review
             </button>

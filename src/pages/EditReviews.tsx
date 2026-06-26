@@ -1,23 +1,13 @@
 import { useEffect, useState } from "react";
-import {useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import type { Hospital } from "../types/hospital";
 import { Spinner } from "../components/ui/spinner";
 import { BackButton } from "../components/ui/BackButton";
-import { getAllReviews } from "../features/auth/api/getAllReviews";
-import type { Review } from "../types/review";
 
-
-export function ManageHospitals() {
+export function EditReviews() {
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const [rating, setRating] = useState(5);
-  const [comment, setComment] = useState("");
-
-  const { id } = useParams();
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [hospital, setHospital] = useState<Hospital | null>(null);
 
   useEffect(() => {
     getHospitals();
@@ -33,7 +23,6 @@ export function ManageHospitals() {
       console.error(error);
       return;
     }
-
     setHospitals(data || []);
     setLoading(false);
   }
@@ -46,9 +35,7 @@ export function ManageHospitals() {
     <main className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
         <BackButton />
-        <h1 className="text-3xl font-bold mb-6">
-          Manage Hospitals
-        </h1>
+        <h1 className="text-3xl font-bold mb-6">Manage Reviews</h1>
 
         <div className="space-y-4">
           {hospitals.map((hospital) => (
@@ -58,21 +45,17 @@ export function ManageHospitals() {
             >
               <div className="flex justify-between items-center">
                 <div>
-                  <h2 className="font-bold">
-                    {hospital.name}
-                  </h2>
+                  <h2 className="font-bold">{hospital.name}</h2>
 
-                  <p className="text-gray-500">
-                    {hospital.city}
-                  </p>
+                  <p className="text-gray-500">{hospital.city}</p>
                 </div>
 
                 <div className="flex gap-3">
                   <Link
-                    to={`/admin/edit-hospital/${hospital.id}`}
+                    to={``}
                     className="bg-[#5B65DC] text-white px-4 py-2 rounded-lg"
                   >
-                    Edit
+                    View Reviews
                   </Link>
                 </div>
               </div>
