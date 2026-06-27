@@ -34,7 +34,7 @@ function App() {
           }
         />
         <Route
-          path="/admin/edit-hospital-reviews:id"
+          path="/admin/edit-hospital-reviews/:id"
           element={
             <AdminRoute>
               < EditHospitalReviews/>
