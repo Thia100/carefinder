@@ -8,6 +8,7 @@ export function InviteAdmin() {
   const [loading, setLoading] = useState(false);
 
   const inviteAdmin = async (email: string) => {
+     await supabase.auth.refreshSession();
     const { data, error } = await supabase.functions.invoke("invite-admin", {
       body: { email },
     });
@@ -20,6 +21,10 @@ export function InviteAdmin() {
   };
 
   const handleInvite = async () => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    console.log("SESSION:", session);
     if (!email) {
       toast.error("Please enter an email address");
       return;
