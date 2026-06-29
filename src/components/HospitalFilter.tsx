@@ -6,6 +6,7 @@ import { HospitalCard } from "./HospitalCard";
 import { Input } from "./ui/Input";
 import { useSearchParams } from "react-router-dom";
 import { ShareButton } from "./ShareButton";
+import { SendEmail } from "./SendEmail";
 
 export function HospitalFilter() {
   const [searchParams] = useSearchParams();
@@ -58,23 +59,7 @@ export function HospitalFilter() {
     return matchesSearch && matchesSpecialty && matchesOwnership;
   });
 
-  const sendEmail = async () => {
-    const response = await fetch("/api/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        to: "thegbolahanfathia@gmail.com",
-        subject: "Hospital Added",
-        message: "Your hospital has been added successfully.",
-      }),
-    });
-
-    const data = await response.json();
-
-    console.log(data);
-  };
+  
 
   return (
     <div>
@@ -128,7 +113,9 @@ export function HospitalFilter() {
             specialty={specialty}
             ownershipType={ownershipType}
           />
-          <button onClick={sendEmail}>Share mail</button>
+          <SendEmail search={search}
+            specialty={specialty}
+            ownershipType={ownershipType}/>
         </div>
       </div>
 
