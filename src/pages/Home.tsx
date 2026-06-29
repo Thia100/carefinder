@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import heroLg from "../assets/images/hero-lg.webp";
+import { LogoutButton } from "../components/logout";
 
 import { HospitalFilter } from "../components/HospitalFilter";
 import { getCurrentProfile } from "../features/auth/api/getCurrentProfile";
@@ -64,6 +65,7 @@ export function Home() {
                 </Link>
               </li>
             )}
+            <LogoutButton />
           </ul>
         </div>
       </nav>
