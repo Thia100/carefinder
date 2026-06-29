@@ -6,7 +6,11 @@ import { SignUp } from "./pages/SignUp";
 import { Dashboard } from "./pages/Dashboard";
 import { AdminRoute } from "./components/AdminRoute";
 import { CreateHospital } from "./pages/CreateHospital";
+
+
 import { EditHospital } from "./pages/EditHospital";
+import { ManageHospitals } from "./pages/ManageHospital";
+
 import { ManageHospitalReviews } from "./pages/ManageHospitalReviews";
 import { EditHospitalReviews } from "./pages/EditHospitalReviews";
 import { InviteAdmin } from "./pages/InviteAdmin";
@@ -26,6 +30,7 @@ function App() {
             </AdminRoute>
           }
         />
+
         <Route
           path="/admin/manage-hospital-reviews"
           element={
@@ -50,7 +55,21 @@ function App() {
             </AdminRoute>
           }
         />
-        <Route path="/admin/edit-hospital/:id" element={<EditHospital />} />
+
+        <Route path="/admin/edit-hospital/:id" element={
+          <AdminRoute>
+            <EditHospital />
+          </AdminRoute>
+        } />
+
+        <Route path="/admin/manage-hospitals" element={
+          <AdminRoute>
+            <ManageHospitals/>
+          </AdminRoute>
+        }>
+
+        </Route>
+
         <Route
           path="/admin/new-hospital"
           element={
