@@ -21,10 +21,12 @@ export function InviteAdmin() {
   };
 
   const handleInvite = async () => {
+     console.log("email value:", email);
     const {
       data: { session },
     } = await supabase.auth.getSession();
     console.log("SESSION:", session);
+
     if (!email) {
       toast.error("Please enter an email address");
       return;
@@ -48,6 +50,7 @@ export function InviteAdmin() {
       <Input
         label="Enter email"
         id="email"
+        type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -58,6 +61,7 @@ export function InviteAdmin() {
       >
         {loading ? "Sending..." : "Invite"}
       </button>
+      <p className="text-xs text-slate-400">Typing: {email}</p>
     </div>
   );
 }
