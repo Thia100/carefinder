@@ -45,6 +45,19 @@ export function Dashboard() {
               Manage Reviews
             </Link>
           </div>
+
+          <div className="bg-white p-6 rounded-2xl shadow">
+            <h2 className="text-xl font-semibold mb-3">
+             Invite Admin
+            </h2>
+
+            <Link
+              to={"/admin/invite-admin"}
+              className="inline-block bg-[#5B65DC] text-white px-4 py-2 rounded-xl"
+            >
+              Invite an Admin
+            </Link>
+          </div>
         </div>
       </div>
     </main>

@@ -9,6 +9,7 @@ import { CreateHospital } from "./pages/CreateHospital";
 import { EditHospital } from "./pages/EditHospital";
 import { ManageHospitalReviews } from "./pages/ManageHospitalReviews";
 import { EditHospitalReviews } from "./pages/EditHospitalReviews";
+import { InviteAdmin } from "./pages/InviteAdmin";
 
 import { Toaster } from "sonner";
 
@@ -30,6 +31,14 @@ function App() {
           element={
             <AdminRoute>
               <ManageHospitalReviews />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/invite-admin"
+          element={
+            <AdminRoute>
+              <InviteAdmin />
             </AdminRoute>
           }
         />
