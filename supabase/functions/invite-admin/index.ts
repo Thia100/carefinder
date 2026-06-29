@@ -28,7 +28,9 @@ Deno.serve(async (req: Request) => {
     const token = authHeader.replace("Bearer ", "");
     const { data: { user } } = await supabase.auth.getUser(token);
 
-    if (user?.user_metadata?.role !== "admin") {
+
+    const role = user?.user_metadata?.role ?? user?.app_metadata?.role;
+    if (role !== "admin") {
       return new Response(JSON.stringify({ error: "Forbidden: Admins only" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
