@@ -113,9 +113,7 @@ export function HospitalFilter() {
             specialty={specialty}
             ownershipType={ownershipType}
           />
-          <SendEmail search={search}
-            specialty={specialty}
-            ownershipType={ownershipType}/>
+          <SendEmail hospitals={hospitals}/>
         </div>
       </div>
 
