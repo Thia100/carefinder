@@ -16,6 +16,7 @@ import rehypeSanitize from "rehype-sanitize";
 import { Spinner } from "../components/ui/spinner";
 import { BackHome } from "../components/ui/BackHome";
 import placeholderImg from "../assets/images/placeholder.webp"
+import { toast } from "sonner";
 
 export function HospitalDetails() {
   const [rating, setRating] = useState(5);
@@ -70,7 +71,7 @@ export function HospitalDetails() {
       setRating(5);
       setComment("");
 
-      console.log("Review submitted");
+      toast.message("Review submitted successfully");
     } catch (error) {
       console.error(error);
     }

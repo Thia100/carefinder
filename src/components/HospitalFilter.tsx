@@ -8,15 +8,18 @@ import { useSearchParams } from "react-router-dom";
 import { ShareButton } from "./ShareButton";
 
 export function HospitalFilter() {
-
   const [searchParams] = useSearchParams();
   const [, setSearchParams] = useSearchParams();
 
   const [search, setSearch] = useState(searchParams.get("search") ?? "");
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
 
-  const [specialty, setSpecialty] = useState(searchParams.get("specialty") ?? "");
-  const [ownershipType, setOwnershipType] = useState(searchParams.get("ownership") ?? "");
+  const [specialty, setSpecialty] = useState(
+    searchParams.get("specialty") ?? "",
+  );
+  const [ownershipType, setOwnershipType] = useState(
+    searchParams.get("ownership") ?? "",
+  );
 
   useEffect(() => {
     async function load() {
@@ -31,13 +34,10 @@ export function HospitalFilter() {
 
     if (search) params.set("search", search);
     if (specialty) params.set("specialty", specialty);
-    if (ownershipType)
-        params.set("ownership", ownershipType);
+    if (ownershipType) params.set("ownership", ownershipType);
 
     setSearchParams(params);
-}, [search, specialty, ownershipType]);
-
-  
+  }, [search, specialty, ownershipType]);
 
   const query = search.trim().toLowerCase();
   const filteredHospitals = hospitals.filter((hospital) => {
@@ -57,6 +57,24 @@ export function HospitalFilter() {
 
     return matchesSearch && matchesSpecialty && matchesOwnership;
   });
+
+  const sendEmail = async () => {
+    const response = await fetch("/api/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: "thegbolahanfathia@gmail.com",
+        subject: "Hospital Added",
+        message: "Your hospital has been added successfully.",
+      }),
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+  };
 
   return (
     <div>
@@ -102,10 +120,15 @@ export function HospitalFilter() {
           <span className="font-semibold">{filteredHospitals.length}</span>{" "}
           hospitals
         </p>
-        
+
         <div className="flex gap-3">
-          <ExportCsvButton hospitals={filteredHospitals} search={search}/>
-          <ShareButton search={search} specialty={specialty} ownershipType={ownershipType}/>
+          <ExportCsvButton hospitals={filteredHospitals} search={search} />
+          <ShareButton
+            search={search}
+            specialty={specialty}
+            ownershipType={ownershipType}
+          />
+          <button onClick={sendEmail}>Share mail</button>
         </div>
       </div>
 

@@ -62,29 +62,71 @@ export function EditHospitalReviews() {
     return <p>Hospital not found.</p>;
   }
 
+  async function updateReviewStatus(reviewId: string, approved: boolean) {
+    const { error } = await supabase
+      .from("reviews")
+      .update({ approved })
+      .eq("id", reviewId);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    fetchReviews();
+  }
+
   return (
     <main className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
         <BackButton />
         <h1 className="text-3xl font-bold mb-6">Manage Reviews</h1>
-        <div>
-          <h2>{hospital?.name}</h2>
-          {reviews.map((review) => (
-            <div key={review.id} className="border rounded-xl p-4 mb-4">
-              <p>
-                <strong>Rating:</strong> {review.rating} ⭐
-              </p>
+        {reviews.length === 0 ? (
+          <p>No reviews have been submitted for this hospital yet</p>
+        ) : (
+          <div>
+            <h2>{hospital?.name}</h2>
+            {reviews.map((review) => (
+              <div key={review.id} className="border rounded-xl p-4 mb-4">
+                <p>
+                  Status:{" "}
+                  <span
+                    className={
+                      review.approved
+                        ? "text-green-600 font-semibold"
+                        : "text-red-600 font-semibold"
+                    }
+                  >
+                    {review.approved ? "Approved" : "Hidden"}
+                  </span>
+                </p>
+                <p>
+                  <strong>Rating:</strong> {review.rating}
+                </p>
 
-              <p>{review.comment}</p>
+                <p>{review.comment}</p>
 
-              <div className="flex gap-2 mt-4">
-                <button>Approve</button>
+                <div className="flex gap-2 mt-4">
+                  <button
+                    disabled={review.approved}
+                    onClick={() => updateReviewStatus(review.id, true)}
+                    className="bg-[#122056] text-white border-none py-2 px-4 rounded-2xl cursor-pointer"
+                  >
+                    Approve
+                  </button>
 
-                <button>Hide</button>
+                  <button
+                    disabled={!review.approved}
+                    onClick={() => updateReviewStatus(review.id, false)}
+                    className="bg-red-600 text-white border-none py-2 px-4 rounded-2xl cursor-pointer"
+                  >
+                    Hide
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

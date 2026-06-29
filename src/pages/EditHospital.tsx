@@ -80,7 +80,6 @@ export function EditHospital() {
     onSubmit: async ({ value }) => {
       try {
         if (!hospital) return;
-        console.log("Submitting:", value);
 
         await editHospital({
           id: hospital.id,
