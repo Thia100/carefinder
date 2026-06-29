@@ -8,27 +8,15 @@ export function InviteAdmin() {
   const [loading, setLoading] = useState(false);
 
   const inviteAdmin = async (email: string) => {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data, error } = await supabase.functions.invoke("invite-admin", {
+      body: { email },
+    });
 
-    const response = await fetch(
-      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/invite-admin`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${session?.access_token}`,
-        },
-        body: JSON.stringify({ email }),
-      }
-    );
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.error || "Failed to invite admin");
+    if (error) {
+      throw new Error(error.message || "Failed to invite admin");
     }
 
-    return result;
+    return data;
   };
 
   const handleInvite = async () => {
@@ -41,7 +29,7 @@ export function InviteAdmin() {
     try {
       await inviteAdmin(email);
       toast.success(`Invite sent to ${email}!`);
-      setEmail(""); // clear the input
+      setEmail("");
     } catch (err: any) {
       toast.error(err.message || "Something went wrong");
     } finally {
@@ -58,7 +46,6 @@ export function InviteAdmin() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-
       <button
         className="cursor-pointer"
         onClick={handleInvite}
