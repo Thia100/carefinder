@@ -6,27 +6,31 @@ type Props = {
   search: string;
   specialty: string;
   ownershipType: string;
+  radius: number | "";
 };
 
-export function ShareButton({ search, specialty, ownershipType }: Props) {
+export function ShareButton({ search, specialty, ownershipType, radius }: Props) {
   const params = new URLSearchParams();
 
   if (search) params.set("search", search);
   if (specialty) params.set("specialty", specialty);
   if (ownershipType) params.set("ownership", ownershipType);
+  if (radius !== "") params.set("radius", radius.toString());
 
   const shareUrl = `${window.location.origin}?${params.toString()}`;
 
   async function copyLink() {
     await navigator.clipboard.writeText(shareUrl);
-
     toast.success("Link copied!");
   }
+
   return (
-    <>
-      <button onClick={copyLink} className="cursor-pointer text-[#122056]" title="Share hospitals">
-        <FontAwesomeIcon icon={faShareNodes} />
-      </button>
-    </>
+    <button
+      onClick={copyLink}
+      className="cursor-pointer text-[#122056]"
+      title="Share hospitals"
+    >
+      <FontAwesomeIcon icon={faShareNodes} />
+    </button>
   );
 }

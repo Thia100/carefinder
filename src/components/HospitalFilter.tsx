@@ -1,4 +1,4 @@
-import { getHospitals } from "../features/auth/api/getHospitals";
+// import { getHospitals } from "../features/auth/api/getHospitals";
 import { useState, useEffect } from "react";
 import type { Hospital } from "../types/hospital";
 import { ExportCsvButton } from "./ExportCsvButton";
@@ -7,6 +7,7 @@ import { Input } from "./ui/Input";
 import { useSearchParams } from "react-router-dom";
 import { ShareButton } from "./ShareButton";
 import { SendEmail } from "./SendEmail";
+import { supabase } from "../lib/supabase";
 
 export function HospitalFilter() {
   const [searchParams] = useSearchParams();
@@ -22,13 +23,43 @@ export function HospitalFilter() {
     searchParams.get("ownership") ?? "",
   );
 
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+  const [radius, setRadius] = useState<number | "">("");
+
   useEffect(() => {
     async function load() {
-      const data = await getHospitals();
-      setHospitals(data);
+      if (radius !== "" && latitude !== null && longitude !== null) {
+        const { data, error } = await supabase.rpc("nearby_hospitals", {
+          user_lat: latitude,
+          user_lng: longitude,
+          radius_km: radius,
+        });
+
+        if (error) {
+          console.error(error);
+          return;
+        }
+
+        setHospitals(data ?? []);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("hospitals")
+        .select("*")
+        .order("name");
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      setHospitals(data ?? []);
     }
+
     load();
-  }, []);
+  }, [latitude, longitude, radius]);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -36,9 +67,25 @@ export function HospitalFilter() {
     if (search) params.set("search", search);
     if (specialty) params.set("specialty", specialty);
     if (ownershipType) params.set("ownership", ownershipType);
+    if (radius !== "") params.set("radius", radius.toString());
 
     setSearchParams(params);
-  }, [search, specialty, ownershipType]);
+  }, [search, specialty, ownershipType, radius]);
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+        setRadius((prev) => (prev === "" ? 10 : prev)); // pre-populate only if untouched
+      },
+      (error) => {
+        console.error(error);
+      },
+    );
+  }, []);
 
   const query = search.trim().toLowerCase();
   const filteredHospitals = hospitals.filter((hospital) => {
@@ -59,43 +106,58 @@ export function HospitalFilter() {
     return matchesSearch && matchesSpecialty && matchesOwnership;
   });
 
-  
-
   return (
     <div>
       <div className="sticky top-4 z-10 bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl shadow-sm p-4 my-12">
-        <div></div>
         <p className="my-2 text-slate-600 text-sm text-center">
           Search hospitals by name, city, specialty, or ownership type.
         </p>
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr] lg:items-center gap-3">
+
+        <div className="">
           <Input
             placeholder="Search hospitals, city, or LGA..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
-          <select
-            value={specialty}
-            onChange={(e) => setSpecialty(e.target.value)}
-            className="w-full border rounded-md px-3 py-2 text-sm bg-white outline-none focus:border-[#3B8780]"
-          >
-            <option value="">All Specialties</option>
-            <option value="Maternity">Maternity</option>
-            <option value="Emergency">Emergency</option>
-            <option value="Dental">Dental</option>
-            <option value="Pediatric">Pediatric</option>
-          </select>
+          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr] lg:items-center gap-3">
+            <Input
+              type="number"
+              label="Radius (km)"
+              value={radius}
+              onChange={(e) => {
+                const value = e.target.value;
 
-          <select
-            value={ownershipType}
-            onChange={(e) => setOwnershipType(e.target.value)}
-            className="w-full border rounded-md px-3 py-2 text-sm bg-white outline-none focus:border-[#3B8780]"
-          >
-            <option value="">All Types</option>
-            <option value="Public">Public</option>
-            <option value="Private">Private</option>
-          </select>
+                if (value === "") {
+                  setRadius("");
+                } else {
+                  setRadius(Number(value));
+                }
+              }}
+            />
+
+            <select
+              value={specialty}
+              onChange={(e) => setSpecialty(e.target.value)}
+              className="w-full border rounded-md px-3 py-2 text-sm bg-white outline-none focus:border-[#3B8780]"
+            >
+              <option value="">All Specialties</option>
+              <option value="Maternity">Maternity</option>
+              <option value="Emergency">Emergency</option>
+              <option value="Dental">Dental</option>
+              <option value="Pediatric">Pediatric</option>
+            </select>
+
+            <select
+              value={ownershipType}
+              onChange={(e) => setOwnershipType(e.target.value)}
+              className="w-full border rounded-md px-3 py-2 text-sm bg-white outline-none focus:border-[#3B8780]"
+            >
+              <option value="">All Types</option>
+              <option value="Public">Public</option>
+              <option value="Private">Private</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -112,15 +174,20 @@ export function HospitalFilter() {
             search={search}
             specialty={specialty}
             ownershipType={ownershipType}
+            radius={radius}
           />
-          <SendEmail hospitals={hospitals}/>
+          <SendEmail hospitals={hospitals} />
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredHospitals.map((hospital) => (
-          <HospitalCard key={hospital.id} hospital={hospital} />
-        ))}
+        {filteredHospitals.length === 0 ? (
+          <p>No hospitals Found</p>
+        ) : (
+          filteredHospitals.map((hospital) => (
+            <HospitalCard key={hospital.id} hospital={hospital} />
+          ))
+        )}
       </div>
     </div>
   );

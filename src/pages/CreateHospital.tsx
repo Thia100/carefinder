@@ -217,6 +217,7 @@ export function CreateHospital() {
                 {({ state, handleBlur, handleChange }) => (
                   <div>
                     <Input
+                    id="phone"
                       label="Phone Number"
                       required
                       type="tel"
