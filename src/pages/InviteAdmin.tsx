@@ -34,8 +34,8 @@ export function InviteAdmin() {
 
     setLoading(true);
     try {
-      await inviteAdmin(email);
-      toast.success(`Invite sent to ${email}!`);
+      const result = await inviteAdmin(email);
+      toast.success(result.message);
       setEmail("");
     } catch (err: any) {
       toast.error(err.message || "Something went wrong");
