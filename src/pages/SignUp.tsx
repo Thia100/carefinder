@@ -55,14 +55,16 @@ export function SignUp() {
     validators: {
       onSubmit: signupSchema,
     },
+
     onSubmit: async ({ value }) => {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: value.email,
         password: value.password,
         options: {
           data: {
             full_name: value.fullName,
           },
+          emailRedirectTo: `${window.location.origin}/`,
         },
       });
 
@@ -71,8 +73,13 @@ export function SignUp() {
         return;
       }
 
-      toast.success("Signup sucessful");
-      navigate("/");
+      if (data.session) {
+        toast.success("Account created!");
+        navigate("/");
+      } else {
+        toast.success("Check your email to confirm your account!");
+        navigate("/login");
+      }
     },
   });
 
@@ -230,7 +237,9 @@ export function SignUp() {
             )}
           </Subscribe>
         </form>
-        <Link to={"/login"} className="mt-6 block">Login</Link>
+        <Link to={"/login"} className="mt-6 block">
+          Login
+        </Link>
       </div>
     </main>
   );

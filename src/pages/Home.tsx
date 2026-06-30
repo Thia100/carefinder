@@ -7,6 +7,7 @@ import { HospitalFilter } from "../components/HospitalFilter";
 import { getCurrentProfile } from "../features/auth/api/getCurrentProfile";
 
 import type { Profile } from "../types/profile";
+import { toast } from "sonner";
 
 export function Home() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -17,7 +18,12 @@ export function Home() {
       try {
         const data = await getCurrentProfile();
         setProfile(data);
-      } catch (error) {
+        if (window.location.hash.includes("access_token")) {
+        toast.success("Email confirmed! Welcome to CareFinder.");
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+      } 
+      catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
